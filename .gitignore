@@ -9,3 +9,4 @@ typechain
 cache
 artifacts
 circuits/build
+circuits/zkeys/*

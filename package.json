@@ -9,7 +9,8 @@
     "hardhat": "^2.9.3"
   },
   "dependencies": {
-    "circomlib": "^2.0.3"
+    "circomlib": "^2.0.3",
+    "zkey-manager": "^0.1.2"
   },
   "scripts": {
     "test": "hardhat test",

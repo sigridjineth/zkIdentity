@@ -37,7 +37,7 @@ template VerifyWinner(n, k, levels) {
   sigVerify.result === 1;
 
   component flattenPubkey = FlattenPubkey(n, k);
-  
+
   for (var i = 0; i < k; i++) {
     flattenPubkey.chunkedPubkey[0][i] <== chunkedPubkey[0][i];
     flattenPubkey.chunkedPubkey[1][i] <== chunkedPubkey[1][i];
@@ -73,5 +73,3 @@ template VerifyWinner(n, k, levels) {
   nullifierCheck.inputs[0] <== rNum;
   nullifierCheck.out === nullifier;
 }
-
-component main = VerifyDfWinner(86, 3, 10);

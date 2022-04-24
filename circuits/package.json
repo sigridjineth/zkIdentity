@@ -7,7 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "npx mocha"
+    "test": "npx mocha",
+    "circuits": "mkdir circuits/build && circom verify_winner.circom --r1cs --wasm --sym --c -o circuits/build"
   },
   "author": "",
   "license": "ISC",

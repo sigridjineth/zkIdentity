@@ -18,4 +18,10 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
  */
 module.exports = {
   solidity: "0.8.10",
+  networks: {
+    ropsten: {
+      url: "https://ethereum-ropsten-rpc.allthatnode.com/" + process.env.ATN_KEY,
+      accounts: [process.env.PRIVATE_KEY]
+    }
+  }
 };

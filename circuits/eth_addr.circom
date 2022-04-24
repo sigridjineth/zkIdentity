@@ -1,7 +1,7 @@
 pragma circom 2.0.3;
 
 include "./vocdoni/keccak.circom";
-include "../../node_modules/circomlib/circuits/bitify.circom";
+include "../node_modules/circomlib/circuits/bitify.circom";
 
 template FlattenPubkey(n, k) {
   signal input chunkedPubkey[2][k];

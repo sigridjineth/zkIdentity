@@ -12,7 +12,6 @@ template VerifyWinner(n, k, levels) {
   signal input msghash[k];
 
   signal input chunkedPubkey[2][k];
-  signal input address;
 
   signal input nullifier;
 

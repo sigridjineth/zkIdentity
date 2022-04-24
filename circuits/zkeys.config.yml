@@ -2,7 +2,7 @@
 out: "./zkeys"
 
 # Make sure that these paths are correct
-circomPath: "../../../.cargo/bin/circom"
+circomPath: "../../../../.cargo/bin/circom"
 snarkjsPath: "../node_modules/snarkjs/build/cli.cjs"
 circomRuntimePath: "../node_modules/circom_runtime"
 ffiasmPath: "../node_modules/ffiasm"
@@ -10,8 +10,8 @@ ffiasmPath: "../node_modules/ffiasm"
 circomFlags: "--r1cs --sym --wasm --wat"
 
 circuits:
-- template: "./verify_df_winner.circom"
-  component: "VerifyDfWinner"
+- template: "./verify_winner.circom"
+  component: "VerifyWinner"
   params: [86, 3, 10] # NOTE: levels TBD based on actual data
   pubInputs: ["merkleRoot"]
   type: "prod"

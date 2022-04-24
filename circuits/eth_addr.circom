@@ -3,28 +3,39 @@ pragma circom 2.0.3;
 include "./vocdoni/keccak.circom";
 include "../node_modules/circomlib/circuits/bitify.circom";
 
-template FlattenPubkey(n, k) {
+template FlattenPubkey(numBits, k) {
   signal input chunkedPubkey[2][k];
 
   signal output pubkeyBits[512];
 
   // must be able to hold entire pubkey in input
-  assert(n*k >= 256);
+  assert(numBits*k >= 256);
 
-  component chunks2Bits[2 * k];
+  component chunks2BitsX[k];
+    
+  for (var chunk = 0; chunk < k; chunk++) {
+    chunks2BitsX[chunk] = Num2Bits(numBits);
+    chunks2BitsX[chunk].in <== chunkedPubkey[0][chunk];
 
-  for (var coord = 0; coord < 2; coord++) {
-    for (var reg = 0; reg < k; reg++) {
-      var compIdx = (coord * k) + reg;
-      chunks2Bits[compIdx] = Num2Bits(n);
-      chunks2Bits[compIdx].in <== chunkedPubkey[coord][reg];
-
-      for (var bit = 0; bit < n; bit++) {
-        var bitIdx = (coord * k * n) + (reg * n) + bit;
-        if (bitIdx < 512) {
-          pubkeyBits[bitIdx] <== chunks2Bits[compIdx].out[bit];
-        }
+    for (var bit = 0; bit < numBits; bit++) {
+      var bitIndex = bit + numBits * chunk;
+      if (bitIndex < 256) {
+        pubkeyBits[bitIndex] <== chunks2BitsX[chunk].out[bit];
       }
+    }
+  }
+
+  component chunks2BitsY[k];
+
+  for (var chunk = 0; chunk < k; chunk++) {
+    chunks2BitsY[chunk] = Num2Bits(numBits);
+    chunks2BitsY[chunk].in <== chunkedPubkey[1][chunk];
+
+    for (var bit = 0; bit < numBits; bit++) {
+        var bitIndex = bit + 256 + (numBits * chunk);
+        if(bitIndex < 512) {
+          pubkeyBits[bitIndex] <== chunks2BitsY[chunk].out[bit];
+        }
     }
   }
 }

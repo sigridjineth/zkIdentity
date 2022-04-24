@@ -13,6 +13,6 @@
   },
   "scripts": {
     "test": "hardhat test",
-    "circuits": "circom2 circuits/verify_df_winner.circom --r1cs --wasm --sym --c"
+    "circuits": "mkdir circuits/build && circom circuits/verify_winner.circom --r1cs --wasm --sym --c -o circuits/build"
   }
 }

@@ -11,7 +11,7 @@ template VerifyWinner(n, k, levels) {
   signal input s[k];
   signal input msghash[k];
 
-  signal input pubkey[2][k];
+  signal input chunkedPubkey[2][k];
   signal input address;
 
   signal input nullifier;
@@ -20,6 +20,7 @@ template VerifyWinner(n, k, levels) {
   signal input merklePathIndices[levels];
   signal input merkleRoot;
 
+  signal pubkeyBits[512];
   signal address;
   signal rNum;
   signal pubkeyBitRegisters[2][k];
@@ -30,16 +31,28 @@ template VerifyWinner(n, k, levels) {
     sigVerify.s[i] <== s[i];
     sigVerify.msghash[i] <== msghash[i];
 
-    sigVerify.pubkey[0][i] <== pubkey[0][i];
-    sigVerify.pubkey[1][i] <== pubkey[1][i];
+    sigVerify.pubkey[0][i] <== chunkedPubkey[0][i];
+    sigVerify.pubkey[1][i] <== chunkedPubkey[1][i];
   }
   sigVerify.result === 1;
 
-  component pubkeyToAddress = PubkeyToAddress(n, k);
+  component flattenPubkey = FlattenPubkey(n, k);
+  
   for (var i = 0; i < k; i++) {
-    pubkeyToAddress.pubkey[0][i] <== pubkey[0][i];
-    pubkeyToAddress.pubkey[1][i] <== pubkey[1][i];
+    flattenPubkey.chunkedPubkey[0][i] <== chunkedPubkey[0][i];
+    flattenPubkey.chunkedPubkey[1][i] <== chunkedPubkey[1][i];
   }
+
+  for (var i = 0; i < 512; i++) {
+    pubkeyBits[i] <== flattenPubkey.pubkeyBits[i];
+  }
+
+  component pubkeyToAddress = PubkeyToAddress();
+
+  for (var i = 0; i < 512; i++) {
+    pubkeyToAddress.pubkeyBits[i] <== pubkeyBits[i];
+  }
+
   address <== pubkeyToAddress.address;
 
   component treeChecker = MerkleTreeChecker(levels);

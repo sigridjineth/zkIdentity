@@ -2,9 +2,9 @@
 
 pragma circom 2.0.0;
 
-include "../../../node_modules/circomlib/circuits/gates.circom";
-include "../../../node_modules/circomlib/circuits/sha256/xor3.circom";
-include "../../../node_modules/circomlib/circuits/sha256/shift.circom"; // contains ShiftRight
+include "../../node_modules/circomlib/circuits/gates.circom";
+include "../../node_modules/circomlib/circuits/sha256/xor3.circom";
+include "../../node_modules/circomlib/circuits/sha256/shift.circom"; // contains ShiftRight
 
 template Xor5(n) {
     signal input a[n];

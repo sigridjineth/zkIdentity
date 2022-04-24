@@ -4,7 +4,6 @@ pragma circom 2.0.0;
 
 include "./utils.circom";
 
-
 // Theta
 
 template D(n, shl, shr) {

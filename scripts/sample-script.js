@@ -4,22 +4,33 @@
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
 const hre = require("hardhat");
+import saveFrontendFiles from "./saveFrontendFiles.js";
 
 async function main() {
-  // Hardhat always runs the compile task when running scripts with its command
-  // line interface.
-  //
-  // If this script is run directly using `node` you may want to call compile
-  // manually to make sure everything is compiled
-  // await hre.run('compile');
+  const [deployer] = await ethers.getSigners();
+  console.log(
+    "Deploying the contracts with the account:",
+    await deployer.getAddress()
+  );
+  
+  console.log("Account balance:", (await deployer.getBalance()).toString());
 
-  // We get the contract to deploy
-  const Greeter = await hre.ethers.getContractFactory("Greeter");
-  const greeter = await Greeter.deploy("Hello, Hardhat!");
+  const Verifier = await ethers.getContractFactory("Verifier")
+  const verifier = await Verifier.deploy();
+  await verifier.deployed();
+  console.log("Verifier (Verify logic for zkp) address:", verifier.address);
 
-  await greeter.deployed();
+  const verifyWinnerContractFactory = await ethers.getContractFactory("VerifyWinner", {
+    libraries: {
+      Verifier: verifier.address,
+    },
+  });
+  const minter = await verifyWinnerContractFactory.deploy();
+  await minter.deployed();
+  console.log("VerifyWinner (NFT Minter) address:", minter.address);
 
-  console.log("Greeter deployed to:", greeter.address);
+  // We also save the contract's artifacts and address in the frontend directory
+  saveFrontendFiles(minter);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

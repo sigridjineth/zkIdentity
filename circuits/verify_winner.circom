@@ -1,4 +1,4 @@
-pragma circom 2.0.1; // NOTE: may need to revert to 1.x for web?
+pragma circom 2.0.3;
 
 include "./merkle.circom";
 include "./ecdsa.circom";

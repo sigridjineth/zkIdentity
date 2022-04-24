@@ -1,3 +1,5 @@
+pragma circom 2.0.3;
+
 template ECDSAVerify(n, k) {
     signal input r[k];
     signal input s[k];

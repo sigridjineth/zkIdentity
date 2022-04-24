@@ -17,6 +17,8 @@
     "mocha": "^9.2.2"
   },
   "dependencies": {
-    "circom_tester": "^0.0.10"
+    "bn.js": "^5.2.0",
+    "circom_tester": "^0.0.10",
+    "elliptic": "^6.5.4"
   }
 }

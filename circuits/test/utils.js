@@ -1,3 +1,6 @@
+var EC = require('elliptic').ec
+var BN = require('bn.js')
+
 function bytesToBits(b) {
   const bits = [];
   for (let i = 0; i < b.length; i++) {
@@ -56,10 +59,30 @@ const numToBits = (num, numBits) => {
   return paddedBits.split("");
 };
 
+const generatePublicKey = () => {
+  const ec = new EC('secp256k1');
+
+  const G = ec.g; // Generator point
+  const pk = new BN('1'); // private key as big number
+  const pubPoint = G.mul(pk); // EC multiplication to determine public point
+
+  const x = pubPoint.getX().toBuffer(); //32 bit x co-ordinate of public point
+  const y = pubPoint.getY().toBuffer(); //32 bit y co-ordinate of public point
+
+  const publicKey = Buffer.concat([x, y]);
+
+  console.log('pubPoint', pubPoint);
+  console.log('x', pubPoint.getX().toBuffer());
+
+  console.log('pub key::' + publicKey.toString('hex'));
+  return publicKey;
+}
+
 module.exports = {
   bytesToBits,
   bitsToBytes,
   hexToBytes,
   bytesToHex,
   numToBits,
+  generatePublicKey
 };

@@ -1,4 +1,5 @@
 pragma circom 2.0.3;
-include "../../eth_addr.circom";
 
-component main = FlattenPubkey(512, 256);
+include "../../vocdoni/keccak.circom";
+
+component main = Keccak(512, 256);

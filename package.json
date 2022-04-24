@@ -9,6 +9,7 @@
     "hardhat": "^2.9.3"
   },
   "dependencies": {
+    "@openzeppelin/contracts": "^4.5.0",
     "circomlib": "^2.0.3",
     "zkey-manager": "^0.1.2"
   },

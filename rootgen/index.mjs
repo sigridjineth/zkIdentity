@@ -1,11 +1,12 @@
 import { Buffer } from 'buffer';
-
 import { readFile } from 'fs/promises';
+import { writeFileSync } from 'fs';
 
 import { buildPoseidon } from 'circomlibjs';
 
 const poseidon = await buildPoseidon();
 
+// NOTE: picked this as the null field element because it's known to not be in the tree
 const NULL_NODE = 1;
 
 async function buildTree(winners) {
@@ -38,6 +39,7 @@ async function buildTree(winners) {
 
             let parentBytes = poseidon([Number(child1), Number(child2)]);
             let parent = '0x' + Buffer.from(parentBytes).toString('hex');
+
             nodeToLeaves[parent] = child1Leaves.concat(child2Leaves);
 
             newLevel.push(parent);
@@ -53,20 +55,19 @@ async function buildTree(winners) {
     }
 }
 
-const getWinners = async () => {
+async function getWinners() {
     const r1Winners = JSON.parse(await readFile(new URL('./data/r1-winners.json', import.meta.url)))
     const r2Winners = JSON.parse(await readFile(new URL('./data/r2-winners.json', import.meta.url)))
     const r3Winners = JSON.parse(await readFile(new URL('./data/r3-winners.json', import.meta.url)))
     const r4Winners = JSON.parse(await readFile(new URL('./data/r4-winners.json', import.meta.url)))
 
-    const allWinners = r1Winners.concat(r2Winners, r3Winners, r4Winners);
+    const allWinnerObjs = r1Winners.concat(r2Winners, r3Winners, r4Winners);
+    const allWinners = allWinnerObjs.map(w => w['winner']);
 
     return [...new Set(allWinners)];
 }
-
 
 let winners = await getWinners();
 let tree = await buildTree(winners);
 
 writeFileSync('output/tree.json', JSON.stringify(tree));
-console.log(tree);

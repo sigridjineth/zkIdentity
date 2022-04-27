@@ -20,6 +20,7 @@
     "bn.js": "^5.2.0",
     "circom_tester": "^0.0.10",
     "circomlibjs": "^0.1.2",
-    "elliptic": "^6.5.4"
+    "elliptic": "^6.5.4",
+    "zkey-manager": "^0.1.2"
   }
 }

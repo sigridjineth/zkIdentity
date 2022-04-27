@@ -6,7 +6,7 @@ import { buildPoseidon } from 'circomlibjs';
 
 const poseidon = await buildPoseidon();
 
-const NULL_NODE = -1;
+const NULL_NODE = 1;
 
 async function buildTree(winners) {
     winners.sort();
@@ -61,11 +61,12 @@ const getWinners = async () => {
 
     const allWinners = r1Winners.concat(r2Winners, r3Winners, r4Winners);
 
-    return allWinners.map(w => w['winner']);
+    return [...new Set(allWinners)];
 }
 
 
 let winners = await getWinners();
 let tree = await buildTree(winners);
 
+writeFileSync('output/tree.json', JSON.stringify(tree));
 console.log(tree);

@@ -11,20 +11,6 @@ template FlattenPubkey(numBits, k) {
   // must be able to hold entire pubkey in input
   assert(numBits*k >= 256);
 
-  component chunks2BitsX[k];
-    
-  for (var chunk = 0; chunk < k; chunk++) {
-    chunks2BitsX[chunk] = Num2Bits(numBits);
-    chunks2BitsX[chunk].in <== chunkedPubkey[0][chunk];
-
-    for (var bit = 0; bit < numBits; bit++) {
-      var bitIndex = bit + numBits * chunk;
-      if (bitIndex < 256) {
-        pubkeyBits[bitIndex] <== chunks2BitsX[chunk].out[bit];
-      }
-    }
-  }
-
   component chunks2BitsY[k];
 
   for (var chunk = 0; chunk < k; chunk++) {
@@ -32,9 +18,23 @@ template FlattenPubkey(numBits, k) {
     chunks2BitsY[chunk].in <== chunkedPubkey[1][chunk];
 
     for (var bit = 0; bit < numBits; bit++) {
+      var bitIndex = bit + numBits * chunk;
+      if (bitIndex < 256) {
+        pubkeyBits[bitIndex] <== chunks2BitsY[chunk].out[bit];
+      }
+    }
+  }
+
+  component chunks2BitsX[k];
+
+  for (var chunk = 0; chunk < k; chunk++) {
+    chunks2BitsX[chunk] = Num2Bits(numBits);
+    chunks2BitsX[chunk].in <== chunkedPubkey[0][chunk];
+
+    for (var bit = 0; bit < numBits; bit++) {
         var bitIndex = bit + 256 + (numBits * chunk);
         if(bitIndex < 512) {
-          pubkeyBits[bitIndex] <== chunks2BitsY[chunk].out[bit];
+          pubkeyBits[bitIndex] <== chunks2BitsX[chunk].out[bit];
         }
     }
   }

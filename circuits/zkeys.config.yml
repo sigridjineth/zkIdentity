@@ -12,7 +12,7 @@ circomFlags: "--r1cs --sym --wasm --wat"
 circuits:
 - template: "./verify_winner.circom"
   component: "VerifyWinner"
-  params: [86, 3, 10] # NOTE: levels TBD based on actual data
+  params: [86, 3, 8]
   pubInputs: ["merkleRoot", "nullifier"]
   type: "prod"
 

@@ -1,4 +1,5 @@
 require("@nomiclabs/hardhat-waffle");
+require("@nomiclabs/hardhat-etherscan");
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -22,6 +23,13 @@ module.exports = {
     ropsten: {
       url: "https://ethereum-ropsten-rpc.allthatnode.com/" + process.env.ATN_KEY,
       accounts: [process.env.PRIVATE_KEY]
+    },
+    rinkeby: {
+      url: "https://ethereum-rinkeby-rpc.allthatnode.com/fV1yQSJuIz74RU8lfhew7xJKndczum36",
+      accounts: [process.env.PRIVATE_KEY]
     }
+  },
+  etherscan: {
+    apiKey: process.env.ETHERSCAN_KEY
   }
 };

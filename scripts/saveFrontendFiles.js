@@ -1,6 +1,6 @@
-let saveFrontendFiles;
+const { artifacts } = require("hardhat");
 
-export default saveFrontendFiles = (minter) => {
+const saveFrontendFiles = (minter) => {
     const fs = require("fs");
     const contractsDir = __dirname + "/../frontend/src/contracts";
   
@@ -13,10 +13,14 @@ export default saveFrontendFiles = (minter) => {
       JSON.stringify({ VerifyWinner: minter.address }, "", 2)
     );
   
-    const MinterArtifact = artifacts.readArtifactSync("VerifyWinner");
+    const MinterArtifact = artifacts.readArtifactSync("AttestationMinter");
   
     fs.writeFileSync(
-      contractsDir + "/VerifyWinner.json",
+      contractsDir + "/AttestationMinter.json",
       JSON.stringify(MinterArtifact, "", 2)
     );
+  }
+
+  module.exports = {
+    saveFrontendFiles,
   }

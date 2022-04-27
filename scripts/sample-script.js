@@ -3,8 +3,8 @@
 //
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
+const { saveFrontendFiles } = require("./saveFrontendFiles");
 const hre = require("hardhat");
-import saveFrontendFiles from "./saveFrontendFiles.js";
 
 async function main() {
   const [deployer] = await ethers.getSigners();
@@ -15,17 +15,14 @@ async function main() {
   
   console.log("Account balance:", (await deployer.getBalance()).toString());
 
-  const Verifier = await ethers.getContractFactory("Verifier")
+  const Verifier = await hre.ethers.getContractFactory("Verifier")
   const verifier = await Verifier.deploy();
   await verifier.deployed();
   console.log("Verifier (Verify logic for zkp) address:", verifier.address);
 
-  const AttestationMinterFactory = await ethers.getContractFactory("AttestationMinter", {
-    libraries: {
-      Verifier: verifier.address,
-    },
-  });
-  const minter = await AttestationMinterFactory.deploy();
+  const AttestationMinterFactory = await hre.ethers.getContractFactory("AttestationMinter");
+  console.log("ADDR", verifier.address);
+  const minter = await AttestationMinterFactory.deploy(verifier.address);
   await minter.deployed();
   console.log("AttestationMinter (NFT Minter) address:", minter.address);
 

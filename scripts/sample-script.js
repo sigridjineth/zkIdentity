@@ -20,14 +20,14 @@ async function main() {
   await verifier.deployed();
   console.log("Verifier (Verify logic for zkp) address:", verifier.address);
 
-  const verifyWinnerContractFactory = await ethers.getContractFactory("VerifyWinner", {
+  const AttestationMinterFactory = await ethers.getContractFactory("AttestationMinter", {
     libraries: {
       Verifier: verifier.address,
     },
   });
-  const minter = await verifyWinnerContractFactory.deploy();
+  const minter = await AttestationMinterFactory.deploy();
   await minter.deployed();
-  console.log("VerifyWinner (NFT Minter) address:", minter.address);
+  console.log("AttestationMinter (NFT Minter) address:", minter.address);
 
   // We also save the contract's artifacts and address in the frontend directory
   saveFrontendFiles(minter);

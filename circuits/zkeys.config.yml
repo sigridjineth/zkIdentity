@@ -13,7 +13,7 @@ circuits:
 - template: "./verify_winner.circom"
   component: "VerifyWinner"
   params: [86, 3, 10] # NOTE: levels TBD based on actual data
-  pubInputs: ["merkleRoot"]
+  pubInputs: ["merkleRoot", "nullifier"]
   type: "prod"
 
 ptauFiles:

@@ -1,3 +1,5 @@
+let saveFrontendFiles;
+
 export default saveFrontendFiles = (minter) => {
     const fs = require("fs");
     const contractsDir = __dirname + "/../frontend/src/contracts";

@@ -45,16 +45,25 @@ template PubkeyToAddress() {
 
     signal output address;
 
-    component keccak = Keccak(512, 256);
+    signal reverse[512];
+
     for (var i = 0; i < 512; i++) {
-      keccak.in[i] <== pubkeyBits[i];
+        reverse[i] <== pubkeyBits[511-i];
+    }
+
+    component keccak = Keccak(512, 256);
+    for (var i = 0; i < 512 / 8; i += 1) {
+       for (var j = 0; j < 8; j++) {
+         keccak.in[8*i + j] <== reverse[8*i + (7-j)];
+       }
     }
 
     // convert the last 160 bits (20 bytes) into the number corresponding to address
     component bits2Num = Bits2Num(160);
-    for (var i = 96; i < 256; i++) {
-      bits2Num.in[i-96] <== keccak.out[i];
+    for (var i = 0; i < 20; i++) {
+      for (var j = 0; j < 8; j++) {
+        bits2Num.in[8*i + j] <== keccak.out[256 - 8*(i+1) + j];
+      }
     }
-
     address <== bits2Num.out;
 }

@@ -8,8 +8,15 @@ const poseidon = await buildPoseidon();
 
 // NOTE: picked this as the null field element because it's known to not be in the tree
 const NULL_NODE = 1;
+const TEST_ADDR = [
+    '0xbb60c606D8e6fE7e9D55dD593F1517e522EA76fF',
+    '0x39D95dB2824c069018865824ee6FC0D7639d9359'
+];
 
-async function buildTree(winners) {
+async function buildTree(winners, production = false) {
+    if (!production) {
+        winners = winners.concat(TEST_ADDR);
+    }
     winners.sort();
 
     let pathElements = Object.fromEntries( winners.map(w => [w, []] ) );
@@ -51,8 +58,8 @@ async function buildTree(winners) {
 
     return {
         root: curLevel[0],
-        leafToPathElements: pathElements,
-        leafToPathIndices: pathIndices
+        pathElements: pathElements,
+        pathIndices: pathIndices
     }
 }
 
@@ -68,7 +75,15 @@ const getWinners = async () => {
     return [...new Set(allWinners)];
 }
 
+const buildTreeForAddress = async (address) => {
+    return buildTree([address, '0x01', '0x02', '0x03']);
+}
+
 let winners = await getWinners();
 let tree = await buildTree(winners);
+writeFileSync('output/tree.json', JSON.stringify(tree, null, 2));
 
-writeFileSync('output/tree.json', JSON.stringify(tree));
+// null address
+// let tree = await buildTreeForAddress('0x0000000000000000000000000000000000000000');
+// console.log(tree['pathElements']['0x0000000000000000000000000000000000000000']);
+// console.log(tree['pathIndices']['0x0000000000000000000000000000000000000000']);

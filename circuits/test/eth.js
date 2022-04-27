@@ -86,7 +86,7 @@ describe("Flatten PubKey Tests", function () {
 describe('Public Key to Address', function() {
   this.timeout(100000);
 
-  it('turns a flat public key into an address', async function() {
+  it('turns a flat public key into an address', async function () {
     const circuit = await wasm_tester(
         path.join(__dirname, 'circuits', 'pubkey_to_address.circom')
     );

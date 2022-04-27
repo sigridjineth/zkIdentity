@@ -21,7 +21,6 @@ template VerifyWinner(n, k, levels) {
 
   signal pubkeyBits[512];
   signal address;
-  signal rNum;
   signal pubkeyBitRegisters[2][k];
 
   component sigVerify = ECDSAVerify(n, k);
@@ -62,13 +61,7 @@ template VerifyWinner(n, k, levels) {
     treeChecker.pathIndices[i] <== merklePathIndices[i];
   }
 
-  component rToNum = Bits2Num(k);
-  for (var i = 0; i < k; i++) {
-    rToNum.in[i] <== r[i];
-  }
-  rNum <== rToNum.out;
-
   component nullifierCheck = Poseidon(1);
-  nullifierCheck.inputs[0] <== rNum;
+  nullifierCheck.inputs[0] <== r[0];
   nullifierCheck.out === nullifier;
 }

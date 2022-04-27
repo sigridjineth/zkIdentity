@@ -5,8 +5,17 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "../circuits/verifier.sol";
 
+interface IVerifier {
+    function verifyProof(
+        uint[2] memory a,
+        uint[2][2] memory b,
+        uint[2] memory c,
+        uint[2] memory input
+    ) external view returns (bool r);
+}
+
 // is Verifier, ERC721Mintable
-contract ProofOfDfWinner is ERC721 {
+contract AttestationMinter is ERC721 {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
     mapping(bytes => bool) public nullifiers;

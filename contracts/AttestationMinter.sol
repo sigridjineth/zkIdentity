@@ -3,7 +3,7 @@ pragma solidity 0.8.10;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
-import "../circuits/verifier.sol";
+import "./Verifier.sol";
 
 interface IVerifier {
     function verifyProof(
@@ -18,7 +18,7 @@ interface IVerifier {
 contract AttestationMinter is ERC721 {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
-    mapping(bytes => bool) public nullifiers;
+    mapping(uint256 => bool) public nullifiers;
     IVerifier public verifier;
 
     constructor(address _verifier) ERC721("DF Winner Proof", "DFPROOF") {

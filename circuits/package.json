@@ -21,6 +21,7 @@
     "circom_tester": "^0.0.10",
     "circomlibjs": "^0.1.2",
     "elliptic": "^6.5.4",
+    "snarkjs": "^0.4.16",
     "zkey-manager": "^0.1.2"
   }
 }

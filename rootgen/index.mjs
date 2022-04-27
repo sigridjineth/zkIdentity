@@ -17,15 +17,16 @@ async function buildTree(winners) {
 
     let nodeToLeaves = Object.fromEntries( winners.map(w => [w,[w]] ) );
     let curLevel = winners;
+
     while (curLevel.length > 1) {
         let newLevel = [];
 
         for (let i = 0; i < curLevel.length; i+=2) {
             let child1 = curLevel[i];
-            let child2 = (i == curLevel.length - 1) ? NULL_NODE : curLevel[i+1];
+            let child2 = (i === curLevel.length - 1) ? NULL_NODE : curLevel[i+1];
 
             let child1Leaves = nodeToLeaves[child1];
-            let child2Leaves = child2 == NULL_NODE ? [] : nodeToLeaves[child2];
+            let child2Leaves = child2 === NULL_NODE ? [] : nodeToLeaves[child2];
 
             for (const leaf of child1Leaves) {
                 pathElements[leaf].push(child2);
@@ -55,7 +56,7 @@ async function buildTree(winners) {
     }
 }
 
-async function getWinners() {
+const getWinners = async () => {
     const r1Winners = JSON.parse(await readFile(new URL('./data/r1-winners.json', import.meta.url)))
     const r2Winners = JSON.parse(await readFile(new URL('./data/r2-winners.json', import.meta.url)))
     const r3Winners = JSON.parse(await readFile(new URL('./data/r3-winners.json', import.meta.url)))

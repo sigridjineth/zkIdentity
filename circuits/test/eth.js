@@ -36,7 +36,7 @@ const flattenPubKey = (x, y, n) => {
   return bitArray;
 };
 
-describe.only("Flatten PubKey Tests", function () {
+describe("Flatten PubKey Tests", function () {
   this.timeout(100000);
 
   it("flattens properly when pubkey is a perfect fit in registers", async () => {
@@ -83,7 +83,7 @@ describe.only("Flatten PubKey Tests", function () {
   });
 });
 
-describe.only('Public Key to Address', function() {
+describe('Public Key to Address', function() {
   this.timeout(100000);
 
   it('turns a flat public key into an address', async function() {

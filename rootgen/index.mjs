@@ -1,3 +1,4 @@
+import { readFile } from 'fs/promises';
 import { buildPoseidon } from 'circomlibjs';
 
 const poseidon = await buildPoseidon();
@@ -71,3 +72,19 @@ const buildTree = async (winnerHexStrs) => {
         pathIndices
     }
 }
+
+const getWinners = async() => {
+    const r1Winners = JSON.parse(await readFile(new URL('./data/r1-winners.json', import.meta.url)))
+    const r2Winners = JSON.parse(await readFile(new URL('./data/r2-winners.json', import.meta.url)))
+    const r3Winners = JSON.parse(await readFile(new URL('./data/r3-winners.json', import.meta.url)))
+    const r4Winners = JSON.parse(await readFile(new URL('./data/r4-winners.json', import.meta.url)))
+
+    const allWinners = r1Winners.concat(r2Winners, r3Winners, r4Winners);
+
+    return allWinners.map(w => w['winner']);
+}
+
+let winners = await getWinners();
+let tree = await buildTree(winners);
+
+console.log(tree['leafToPathElements'])

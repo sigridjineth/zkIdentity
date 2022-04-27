@@ -36,17 +36,19 @@ committment = hash(key + secret)
 * User submits merkle path proof to smart contract, and it verifies one's identity without revealing which `commitment` is associated with one's public key.
 * Smart contract mints a NFT and sends to `account 2`
 
-#### What we are going to prove?
-* Let us know the following.
-```
-(sig, msg, pubKey, nullifier, nullifierHash, merkle_branch, merkle_root)
-```
-* such that...
-```
-sig == ecdsa_verify(r, s, msghash, pubkey)
-merkle_verify(pubkey, merkleRoot, merklePathElements, merklePathIndices)
-nullifier = poseidon(sig)
-nullifierHash = poseidon(nullifier)
+#### How to run the project
+```shell
+#!/bin/bash
+
+npm install
+cd circuits
+
+npx zkey-manager compile -c ./zkeys.config.yml
+npx zkey-manager downloadPtau -c ./zkeys.config.yml
+npx zkey-manager genZkeys -c ./zkeys.config.yml
+
+cp zkeys/VerifyDfWinner_86-3-8_prod.0.zkey ../frontend/public/
+cp zkeys/VerifyDfWinner_86-3-8_prod_js/VerifyWinner_86-3-8_prod.wasm ../frontend/public/
 ```
 
 ### IV. Product Roadmap

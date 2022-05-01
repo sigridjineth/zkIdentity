@@ -6,14 +6,15 @@ import { ethers } from "ethers";
 const MESSAGE = "ZK Identity: Dark Forest Winners";
 
 function bigint_to_array(n, k, x) {
+    let idx;
     let mod = 1n
-    for (var idx = 0; idx < n; idx++) {
+    for (idx = 0; idx < n; idx++) {
       mod = mod * 2n
     }
   
     let ret = []
-    var x_temp = x
-    for (var idx = 0; idx < k; idx++) {
+    let x_temp = x;
+    for (idx = 0; idx < k; idx++) {
       ret.push(x_temp % mod)
       x_temp = x_temp / mod
     }
@@ -21,8 +22,8 @@ function bigint_to_array(n, k, x) {
 }
 
 function split(pubkey_bigint) {
-    const x_bigint = pubkey_bigint / 2n ** 256n
-    const y_bigint = pubkey_bigint % 2n ** 256n
+    const x_bigint = pubkey_bigint / (2n ** 256n)
+    const y_bigint = pubkey_bigint % (2n ** 256n)
     return [x_bigint, y_bigint]
 }
 

@@ -1,5 +1,5 @@
 /*eslint-disable*/
-// /* global BigInt */
+/* global BigInt */
 import { ethers } from "ethers";
 // import { buildPoseidon } from 'circomlibjs';
 

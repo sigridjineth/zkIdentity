@@ -1,4 +1,4 @@
-/*eslint-disable*/
+/* global BigInt */
 module.exports = async function builder(code, options) {
 
     options = options || {};
@@ -287,4 +287,3 @@ function fnvHash(str) {
     shash = '0'.repeat(n).concat(shash);
     return shash;
 }
-/*eslint-disable*/

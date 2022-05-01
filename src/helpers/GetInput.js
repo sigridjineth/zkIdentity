@@ -21,9 +21,21 @@ function bigint_to_array(n, k, x) {
     return ret
 }
 
+function calculateMod(str, mod) {
+    var n = str.length;
+    if (n <= 10) {
+        return parseInt(str) % mod;
+    }
+    else {
+        var first = str.substring(0, n - 10)
+        var second = str.substring(n - 10)
+        return (calculateMod(first, mod) * (Math.pow(10, 10) % mod) + parseInt(second) % mod) % mod;
+    }
+}
+
 function split(pubkey_bigint) {
-    const x_bigint = BigInt(pubkey_bigint / 2n ** 256n)
-    const y_bigint = BigInt(pubkey_bigint % (2n ** 256n))
+    const x_bigint = BigInt(BigInt(pubkey_bigint) / BigInt(2n ** 256n))
+    const y_bigint = BigInt(BigInt(pubkey_bigint) % BigInt((2n ** 256n)))
     console.log("x_bigint", x_bigint, typeof x_bigint)
     console.log("y_bigint", y_bigint, typeof y_bigint)
     return [x_bigint, y_bigint]

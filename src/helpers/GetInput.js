@@ -22,8 +22,10 @@ function bigint_to_array(n, k, x) {
 }
 
 function split(pubkey_bigint) {
-    const x_bigint = pubkey_bigint / (2n ** 256n)
-    const y_bigint = pubkey_bigint % (2n ** 256n)
+    const x_bigint = BigInt(pubkey_bigint / 2n ** 256n)
+    const y_bigint = BigInt(pubkey_bigint % (2n ** 256n))
+    console.log("x_bigint", x_bigint, typeof x_bigint)
+    console.log("y_bigint", y_bigint, typeof y_bigint)
     return [x_bigint, y_bigint]
 }
 

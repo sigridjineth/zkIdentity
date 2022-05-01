@@ -1,4 +1,4 @@
-import builder from './witness_calculator'
+import { builder } from './witness_calculator'
 import { groth16 } from 'snarkjs';
 import path from "path";
 

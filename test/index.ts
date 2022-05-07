@@ -6,7 +6,7 @@ import { ethers, run } from "hardhat"
 // import identityCommitments from "../public/identityCommitments.json"
 import createIdentityCommitments from "../test/identity-test"
 
-describe("Greeters", function () {
+describe("AttestationMinter", function () {
     let contract: Contract
     let contractOwner: Signer
     // let dontSure: Signer

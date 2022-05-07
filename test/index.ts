@@ -63,7 +63,11 @@ describe("Greeters", function () {
 
             // await expect(transaction2).to.emit(contract, "NewGreeting").withArgs(bytes32Greeting)
 
-            const transaction = contract.greet(bytes32Greeting, nullifierHash, solidityProof)
+            console.log("nullifierHash", nullifierHash);
+
+            const testHash = 12369641887381720728228481080453068802864453634826283733139048263356723130563n;
+
+            const transaction = contract.greet(bytes32Greeting, testHash, solidityProof)
             await expect(transaction).to.emit(contract, "NewGreeting").withArgs(bytes32Greeting)
 
         })

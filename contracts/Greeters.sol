@@ -4,10 +4,12 @@ pragma solidity ^0.8.4;
 import "@appliedzkp/semaphore-contracts/interfaces/IVerifier.sol";
 import "@appliedzkp/semaphore-contracts/base/SemaphoreCore.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
 /// @title Greeters contract.
 /// @dev The following code is just a example to show how Semaphore con be used.
-contract Greeters is SemaphoreCore, Ownable {
+contract Greeters is ERC721, SemaphoreCore, Ownable {
     // A new greeting is published every time a user's proof is validated.
     event NewGreeting(bytes32 greeting);
 
@@ -18,7 +20,7 @@ contract Greeters is SemaphoreCore, Ownable {
     // The external verifier used to verify Semaphore proofs.
     IVerifier public verifier;
 
-    constructor(uint256 _greeters, address _verifier) {
+    constructor(uint256 _greeters, address _verifier) ERC721("Dark Forest Proof", "PROOF") {
         greeters = _greeters;
         verifier = IVerifier(_verifier);
     }

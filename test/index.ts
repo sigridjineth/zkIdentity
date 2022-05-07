@@ -1,21 +1,21 @@
 import { Strategy, ZkIdentity } from "@zk-kit/identity"
 import { generateMerkleProof, Semaphore } from "@zk-kit/protocols"
 import { expect } from "chai"
-import { Contract } from "ethers"
+import { Contract, Signer } from "ethers"
 import { ethers, run } from "hardhat"
 // import identityCommitments from "../public/identityCommitments.json"
 import createIdentityCommitments from "../test/identity-test"
 
 describe("Greeters", function () {
     let contract: Contract
-    // let contractOwner: Signer
+    let contractOwner: Signer
     // let dontSure: Signer
 
     before(async () => {
         contract = await run("deploy", { logs: false })
 
-        // const signers = await ethers.getSigners()
-        // contractOwner = signers[0]
+        const signers = await ethers.getSigners()
+        contractOwner = signers[0]
         // dontSure = signers[1]
     })
 
@@ -70,6 +70,8 @@ describe("Greeters", function () {
             const transaction = contract.greet(bytes32Greeting, testHash, solidityProof)
             await expect(transaction).to.emit(contract, "NewGreeting").withArgs(bytes32Greeting)
 
+            // minting NFTs?
+            expect(await contract.balanceOf(contractOwner.getAddress())).to.equal(1);
         })
     })
 })

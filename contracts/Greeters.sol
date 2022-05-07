@@ -1,8 +1,8 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import "@appliedzkp/semaphore-contracts/interfaces/IVerifier.sol";
-import "@appliedzkp/semaphore-contracts/base/SemaphoreCore.sol";
+import "./Semaphore/IVerifier.sol";
+import "./Semaphore/SemaphoreCore.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
@@ -33,7 +33,7 @@ contract Greeters is ERC721, SemaphoreCore, Ownable {
         bytes32 _greeting,
         uint256 _nullifierHash,
         uint256[8] calldata _proof
-    ) external onlyOwner {
+    ) external onlyOwner _onlyOneNullifierHash(_nullifierHash) {
         _verifyProof(_greeting, greeters, _nullifierHash, greeters, _proof, verifier);
 
         // Prevent double-greeting (nullifierHash = hash(root + identityNullifier)).

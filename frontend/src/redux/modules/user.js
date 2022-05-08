@@ -1,6 +1,6 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
-import { ethers } from "ethers";
+import { ethers, Wallet } from "ethers";
 
 import AttestationMinterArtifact from "../../contracts/AttestationMinter.json";
 import contractAddress from "../../contracts/contract-address.json";
@@ -32,6 +32,7 @@ const minter = createAction(MINTER, (minter) => ({ minter }));
 //네트워크 설정
 const HARDHAT_NETWORK_ID = "31337";
 const GOERLI_NETWORK_ID = "5";
+const POLYGON_NETWORK_ID = "137";
 const ERROR_CODE_TX_REJECTED_BY_USER = 4001;
 
 // initialState
@@ -50,10 +51,7 @@ const initialState = {
 
 // middleware actions
 const _checkNetwork = () => {
-  if (
-    ethereum.networkVersion === HARDHAT_NETWORK_ID ||
-    ethereum.networkVersion === GOERLI_NETWORK_ID
-  ) {
+  if (ethereum.networkVersion === POLYGON_NETWORK_ID) {
     console.log("true");
     return true;
   }
@@ -63,6 +61,7 @@ const _checkNetwork = () => {
 
 const _intializeEthers = () => {
   const _provider = new ethers.providers.Web3Provider(window.ethereum);
+  console.log(">>>>", _provider.getSigner(0));
   const _minter = new ethers.Contract(
     contractAddress.AttestationMinter,
     AttestationMinterArtifact.abi,
@@ -78,7 +77,7 @@ const _intializeEthers = () => {
 const loginDB = () => {
   return async function (dispatch, getState, { history }) {
     if (_checkNetwork() === false) {
-      alert("Please connect Metamask to Localhost:8545 or goerli");
+      alert("Please connect Metamask to Polygon");
       return;
     }
 
@@ -97,8 +96,9 @@ const loginCheckDB = () => {
   _intializeEthers();
   return async function (dispatch, getState, { history }) {
     const network = await ethereum.request({ method: "net_version" });
+    console.log(network);
 
-    if (Number(network) === 5 || 31337) {
+    if (Number(network) === 137) {
       const accounts = await ethereum.request({
         method: "eth_accounts",
       });

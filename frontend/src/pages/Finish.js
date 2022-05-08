@@ -45,7 +45,7 @@ function Finish() {
       <Link
         className="link"
         onClick={() =>
-          window.open(`https://goerli.etherscan.io/tx/${txHash}`, "_blank")
+          window.open(`https://polygonscan.com/tx/${txHash}`, "_blank")
         }
       >
         Check Transaction

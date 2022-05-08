@@ -22,21 +22,17 @@ function CheckingReward(props) {
   //   }, 3000);
   // }, []);
 
-  const { isLoading } = props;
-
   return (
     <>
-      {isLoading ? (
-        <>
-          <Card>
-            <Loading />
-            <Spacing size="10px" />
-            <Text bold>Waiting...</Text>
-            <Spacing size="20px" />
-            <Text>We're checking your score.</Text>
-          </Card>
-        </>
-      ) : null}
+      <>
+        <Card>
+          <Loading />
+          <Spacing size="10px" />
+          <Text bold>Waiting...</Text>
+          <Spacing size="20px" />
+          <Text>We're checking your score.</Text>
+        </Card>
+      </>
     </>
   );
 }

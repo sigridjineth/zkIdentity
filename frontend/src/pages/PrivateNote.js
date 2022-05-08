@@ -44,7 +44,7 @@ function PrivateNote() {
         darkforest developers.
       </Text>
       <Spacing size="20px" />
-      <Textarea value={proof} />
+      <Textarea value={proof} height="20rem" />
       <Spacing size="20px" />
       <ButtonWrap
         onClickLeft={onClickLeft}

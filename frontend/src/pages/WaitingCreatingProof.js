@@ -23,6 +23,8 @@ function WaitngCreatingProof() {
       <Loading />
       <Spacing size="10px" />
       <Text bold>Waiting...</Text>
+      <Spacing size="20px" />
+      <Text>We're Creating a proof.</Text>
     </Card>
   );
 }

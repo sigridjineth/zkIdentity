@@ -13,12 +13,6 @@ import {
 import { history } from "../redux/configureStore";
 
 function WaitngClaim() {
-  React.useEffect(() => {
-    setTimeout(function () {
-      history.push("/6");
-    }, 3000);
-  }, []);
-
   function onClickRight() {}
   function onClickLeft() {
     history.goBack();
@@ -30,7 +24,7 @@ function WaitngClaim() {
       <Spacing size="10px" />
       <Text bold>Waiting...</Text>
       <Spacing size="20px" />
-      <Link>Check the Transaction</Link>
+      <Text>We're minting your NFT.</Text>
     </Card>
   );
 }

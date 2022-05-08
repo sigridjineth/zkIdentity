@@ -12,6 +12,7 @@ import {
   PrivateNote,
   SecretClaim,
   WaitngClaim,
+  FinishFail,
 } from "../pages";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { actionCreators as nftActions } from "../redux/modules/nft";
@@ -61,6 +62,7 @@ function App() {
             <Route path="/4" exact component={Home} />
             <Route path="/5" exact component={Home} />
             <Route path="/6" exact component={Home} />
+            <Route path="/fail" exact component={Home} />
           </>
         ) : (
           <>
@@ -71,6 +73,7 @@ function App() {
             <Route path="/4" exact component={SecretClaim} />
             <Route path="/5" exact component={WaitngClaim} />
             <Route path="/6" exact component={Finish} />
+            <Route path="/fail" exact component={FinishFail} />
           </>
         )}
       </ConnectedRouter>

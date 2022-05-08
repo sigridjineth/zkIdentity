@@ -25,7 +25,7 @@ export default Card;
 
 const CardContainer = styled.div`
   position: absolute;
-  top: calc(50% - 200px);
+  top: calc(50% - 300px);
   left: calc(50% - 180px);
   height: fit-content;
   width: 360px;

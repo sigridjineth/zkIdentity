@@ -6,6 +6,7 @@ import PrivateNote from "./PrivateNote";
 import SecretClaim from "./SecretClaim";
 import WaitngClaim from "./WaitngClaim";
 import WaitingCreatingProof from "./WaitingCreatingProof";
+import FinishFail from "./FinishFail";
 
 export {
   AfterConnect,
@@ -16,4 +17,5 @@ export {
   SecretClaim,
   WaitngClaim,
   WaitingCreatingProof,
+  FinishFail,
 };

@@ -13,15 +13,18 @@ const { ethereum } = window;
 // actions
 const GET_PROOF = "GET_PROOF";
 const IS_LOADING = "IS_LOADING";
+const TX_HASH = "TX_HASH";
 
 // action creators
 const getProof = createAction(GET_PROOF, (getProof) => ({ getProof }));
 const isLoading = createAction(IS_LOADING, (isLoading) => ({ isLoading }));
+const txHash = createAction(TX_HASH, (txHash) => ({ txHash }));
 
 // initialState
 const initialState = {
   getProof: undefined,
   isLoading: false,
+  txHash: undefined,
 };
 
 // middleware actions
@@ -56,37 +59,20 @@ const _handleProve = (_provider) => {
 
 const _handleVerify = (account, proof, minter) => {
   return async function (dispatch, getState, { history }) {
-    // take proof and call smart contract
-    const proofs = JSON.parse(window.localStorage.getItem("proofs"));
-
-    console.log(proof);
-
-    // window.localStorage.setItem(
-    //   "proofs",
-    //   JSON.stringify(proofs.filter((item) => item.address === account))
-    // );
-
-    // NOTE: this assumes that proof is the proper output from `buildContractCallArgs
-    const tx = await minter.mint(
-      proof[0],
-      proof[1],
-      proof[2],
-      proof[3],
-      proof[4]
-    );
-    const receipt = await tx.wait();
-    // TODO: txBeingSent and all that jazz. like in the unused transfer message
-
-    if (receipt.status !== 0) {
-      const storedProofs = window.localStorage.getItem("usedProofs");
-      const usedProofs = storedProofs ? JSON.parse(storedProofs) : [];
-      window.localStorage.setItem(
-        "usedProofs",
-        JSON.stringify([...usedProofs, proof])
-      );
-    }
-
-    window.location.reload();
+    dispatch(isLoading(true));
+    await minter
+      .mint(proof[0], proof[1], proof[2], proof[3], proof[4])
+      .then((response) => {
+        console.log(response.hash);
+        dispatch(txHash(response.hash));
+        dispatch(isLoading(false));
+        history.push("/6");
+      })
+      .catch((error) => {
+        console.error(error.message);
+        dispatch(isLoading(false));
+        history.push("/fail");
+      });
   };
 };
 
@@ -100,6 +86,10 @@ export default handleActions(
     [IS_LOADING]: (state, action) =>
       produce(state, (draft) => {
         draft.isLoading = action.payload.isLoading;
+      }),
+    [TX_HASH]: (state, action) =>
+      produce(state, (draft) => {
+        draft.txHash = action.payload.txHash;
       }),
   },
   initialState

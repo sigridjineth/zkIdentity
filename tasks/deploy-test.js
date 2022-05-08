@@ -3,7 +3,7 @@ import { poseidon } from "circomlibjs";
 import { Contract } from "ethers";
 import { task, types } from "hardhat/config";
 // import identityCommitments from "../public/identityCommitments.json"
-import createIdentityCommitments from "../test/identity-test";
+import { createIdentityCommitments } from "../test/identity-test";
 
 async function main() {
   // This is just a convenience check
@@ -22,6 +22,8 @@ async function main() {
     await deployer.getAddress()
   );
 
+  console.log("Account address:", await deployer.getAddress())
+
   console.log("Account balance:", (await deployer.getBalance()).toString());
 
   const VerifierContract = await ethers.getContractFactory("Verifier");
@@ -29,19 +31,21 @@ async function main() {
   await verifier.deployed();
   console.log("Verifier address:", verifier.address);
 
-  const GreetersContract = await ethers.getContractFactory("AttestationMinter");
+  const MinterContract = await ethers.getContractFactory("AttestationMinter");
 
   const tree = new IncrementalMerkleTree(poseidon, 20, BigInt(0), 2);
 
-  for (const identityCommitment of createIdentityCommitments()) {
+  const identities = createIdentityCommitments()
+
+  for (const identityCommitment of identities) {
     tree.insert(identityCommitment);
   }
 
-  const greeters = await GreetersContract.deploy(tree.root, verifier.address);
+  const minter = await MinterContract.deploy(tree.root, verifier.address);
 
-  await greeters.deployed();
+  await minter.deployed();
 
-  console.log(`Greeters contract has been deployed to: ${greeters.address}`);
+  console.log(`AttestationMinter contract has been deployed to: ${minter.address}`);
 }
 
 main()

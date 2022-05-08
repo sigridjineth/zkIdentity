@@ -1,4 +1,6 @@
-import { Strategy, ZkIdentity } from "@zk-kit/identity";
+const { Strategy, ZkIdentity } = require("@zk-kit/identity");
+const { IncrementalMerkleTree } = require("@zk-kit/incremental-merkle-tree")
+const { poseidon } = require("circomlibjs")
 
 const accounts = [
   "0x0f75f25eb9bc68c8886d6d4828966c58aac3c232",
@@ -16,6 +18,17 @@ const message = [
 // const arr = words.split("");
 // console.log(arr);
 
+async function mockTree() {
+  const tree = new IncrementalMerkleTree(poseidon, 20, BigInt(0), 2)
+  for (const identityCommitment of createIdentityCommitments()) {
+    tree.insert(identityCommitment)
+  }
+
+  return tree;
+}
+
+console.log(mockTree());
+
 function createIdentityCommitments() {
   let identityCommitments = [];
 
@@ -30,7 +43,7 @@ function createIdentityCommitments() {
   return identityCommitments;
 }
 
-export { createIdentityCommitments, accounts } ;
+export default createIdentityCommitments;
 
 // let identityCommitments = [];
 

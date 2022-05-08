@@ -3,9 +3,9 @@ import { poseidon } from "circomlibjs"
 import { Contract } from "ethers"
 import { task, types } from "hardhat/config"
 // import identityCommitments from "../public/identityCommitments.json"
-import { createIdentityCommitments, accounts } from "../test/identity-test"
+import createIdentityCommitments from "../test/identity-test"
 
-task("deploy", "Deploy a Greeters contract")
+task("deploy", "Deploy a Verify contract")
     .addOptionalParam<boolean>("logs", "Print the logs", true, types.boolean)
     .setAction(async ({ logs }, { ethers }): Promise<Contract> => {
         const VerifierContract = await ethers.getContractFactory("Verifier")
@@ -30,6 +30,4 @@ task("deploy", "Deploy a Greeters contract")
         logs && console.log(`Greeters contract has been deployed to: ${minters.address}`)
 
         return minters
-
-        console.log(accounts)
     })

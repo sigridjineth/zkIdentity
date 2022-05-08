@@ -18,6 +18,7 @@
     },
     "dependencies": {
         "@metamask/detect-provider": "^1.2.0",
+        "@nomiclabs/hardhat-etherscan": "^3.0.3",
         "@zk-kit/identity": "^1.4.1",
         "@zk-kit/protocols": "^1.11.0",
         "assert": "^2.0.0",

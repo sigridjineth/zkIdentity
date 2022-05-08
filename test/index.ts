@@ -21,17 +21,21 @@ describe('AttestationMinter', function () {
   before(async () => {
     contract = await run('deploy', { logs: false })
 
+    // // when mumbai
+    // contract = await (
+    //   await ethers.getContractFactory('AttestationMinter')
+    // ).attach('0x29F37C0AeEb1810062D1C3989c3A10E657319Cb7')
+
     const signers = await ethers.getSigners()
     contractOwner = signers[0]
     NFTMinter = signers[1]
   })
 
-  describe('# NFTs', () => {
+  describe('# Rendering Hash and NFTs', () => {
     const wasmFilePath = '../public/semaphore.wasm'
     const finalZkeyPath = '../public/semaphore_final.zkey'
 
     it('should issue proof', async () => {
-      console.log(NFTMinter)
       const message = await contractOwner.signMessage(
         (await contractOwner.getAddress()).toString(),
       )
@@ -61,14 +65,6 @@ describe('AttestationMinter', function () {
         nowMintingWinner,
       )
 
-      // const witness2 = Semaphore.genWitness(
-      //     identity.getTrapdoor() + 1n,
-      //     identity.getNullifier() + 1n,
-      //     merkleProof,
-      //     merkleProof.root,
-      //     greeting
-      // )
-
       const fullProof = await Semaphore.genProof(
         witness,
         wasmFilePath,
@@ -76,31 +72,33 @@ describe('AttestationMinter', function () {
       )
       solidityProof = Semaphore.packToSolidityProof(fullProof.proof)
 
-      // const fullProof2 = await Semaphore.genProof(witness2, wasmFilePath, finalZkeyPath)
-      // const solidityProof2 = Semaphore.packToSolidityProof(fullProof2.proof)
-
       const nullifierHash = Semaphore.genNullifierHash(
         merkleProof.root,
         identity.getNullifier(),
       )
 
-      // const transaction2 = contract.greet(bytes32Greeting, nullifierHash, solidityProof2)
+      console.log('>>>>>>>>>>>>>>>>>>>>>>>>>> nullifierHash', nullifierHash)
 
-      // await expect(transaction2).to.emit(contract, "NewGreeting").withArgs(bytes32Greeting)
+      // local
+    //   testHash = 8256506138774881883855200333341341504380758576372696209204233687827671036315n
 
-      console.log('nullifierHash', nullifierHash)
+      // deploy mumbai
+      testHash = 17255530457257394875176377021288167427631990061268730519821747969551682432884n;
 
-      // testHash = 12369641887381720728228481080453068802864453634826283733139048263356723130563n;
-
-      testHash = 7931904850431481242860951826119656502805225605339161111671000054048825240416n
+    //   console.log(nullifierHash === testHash)
 
       expect(nullifierHash).to.equal(testHash)
     }),
+
       it('should mint', async () => {
         const NFTMinterAddress = await NFTMinter.getAddress()
+
+        // console.log(">>>>>>>>>>>>>>>>>>>>>", NFTMinterAddress)
+
         const transaction = await contract
           .connect(NFTMinter)
           .mint(correctMinter, testHash, solidityProof)
+
         await expect(transaction)
           .to.emit(contract, 'NewProofMade')
           .withArgs(NFTMinterAddress)

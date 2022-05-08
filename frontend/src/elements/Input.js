@@ -3,10 +3,10 @@ import styled from "styled-components";
 import { Colors } from "./Colors";
 
 const Input = (props) => {
-  const { onChange, value, placeholder, id, label, alert, alertMessage } =
+  const { onChange, value, placeholder, id, label, alert, alertMessage, _ref } =
     props;
 
-  const styles = {};
+  const styles = { _ref };
 
   if (alert) {
     return (
@@ -17,6 +17,7 @@ const Input = (props) => {
           value={value}
           placeholder={placeholder}
           onChange={onChange}
+          ref={_ref}
         ></InputContainerAlert>
         <InputAlert>{alertMessage}</InputAlert>
       </>
@@ -31,6 +32,7 @@ const Input = (props) => {
         value={value}
         placeholder={placeholder}
         onChange={onChange}
+        ref={_ref}
       ></InputContainer>
     </>
   );

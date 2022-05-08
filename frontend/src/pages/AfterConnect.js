@@ -43,7 +43,7 @@ function AfterConnect(props) {
           <ButtonWrap
             oneButton
             onClickRight={onClickRight}
-            btnRight="Mint NFT"
+            btnRight="Create Proof"
           />
         </Card>
       ) : (

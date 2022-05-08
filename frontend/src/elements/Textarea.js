@@ -12,10 +12,12 @@ const Textarea = (props) => {
     alert,
     alertMessage,
     height,
+    _ref,
   } = props;
 
   const styles = {
     height: height,
+    _ref,
   };
 
   if (alert) {
@@ -28,6 +30,7 @@ const Textarea = (props) => {
           value={value}
           placeholder={placeholder}
           onChange={onChange}
+          ref={_ref}
         ></TextareaContainerAlert>
         <TextareaAlert>{alertMessage}</TextareaAlert>
       </>
@@ -43,6 +46,7 @@ const Textarea = (props) => {
         value={value}
         placeholder={placeholder}
         onChange={onChange}
+        ref={_ref}
       ></TextareaContainer>
     </>
   );

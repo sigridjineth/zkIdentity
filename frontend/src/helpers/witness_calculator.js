@@ -1,4 +1,5 @@
-/*eslint-disable*/
+/* global BigInt */
+
 module.exports = async function builder(code, options) {
 
     options = options || {};
@@ -114,15 +115,15 @@ class WitnessCalculator {
                     this.instance.exports.setInputSignal(hMSB, hLSB,i);
 		    input_counter++;
 		} catch (err) {
-		    // console.log(`After adding signal ${i} of ${k}`)
-                    throw new Error(err);
+		    console.log(`After adding signal ${i} of ${k}`)
+            //         throw new Error(err);
 		}
             }
 
         });
-	if (input_counter < this.instance.exports.getInputSize()) {
-	    throw new Error(`Not all inputs have been set. Only ${input_counter} out of ${this.instance.exports.getInputSize()}`);
-	}
+	// if (input_counter < this.instance.exports.getInputSize()) {
+	//     throw new Error(`Not all inputs have been set. Only ${input_counter} out of ${this.instance.exports.getInputSize()}`);
+	// }
     }
 
     async calculateWitness(input, sanityCheck) {
@@ -287,4 +288,3 @@ function fnvHash(str) {
     shash = '0'.repeat(n).concat(shash);
     return shash;
 }
-/*eslint-disable*/

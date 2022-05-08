@@ -12,14 +12,14 @@ describe("AttestationMinter", function () {
     let solidityProof: SemaphoreSolidityProof
     let correctMinter: string
     let testHash: BigInt
-    let contractMinter: Signer
+    let NFTMinter: Signer
 
     before(async () => {
         contract = await run("deploy", { logs: false })
 
         const signers = await ethers.getSigners()
         contractOwner = signers[0]
-        contractMinter = signers[1]
+        NFTMinter = signers[1]
     })
 
     describe("# NFTs", () => {
@@ -27,7 +27,7 @@ describe("AttestationMinter", function () {
         const finalZkeyPath = "../public/semaphore_final.zkey"
 
         it("should issue proof", async () => {
-            console.log(contractMinter)
+            console.log(NFTMinter)
             const message = await contractOwner.signMessage((await contractOwner.getAddress()).toString())
 
             console.log("message", message)
@@ -78,11 +78,12 @@ describe("AttestationMinter", function () {
         }),
 
         it("should mint", async() => {
-            const transaction = contract.greet(correctMinter, testHash, solidityProof)
-            await expect(transaction).to.emit(contract, "NewProofMade").withArgs(correctMinter)
+            const NFTMinterAddress = await NFTMinter.getAddress();
+            const transaction = await contract.connect(NFTMinter).greet(correctMinter, testHash, solidityProof)
+            await expect(transaction).to.emit(contract, "NewProofMade").withArgs(NFTMinterAddress)
 
             // minting NFTs?
-            expect(await contract.balanceOf(contractOwner.getAddress())).to.equal(1);
+            expect(await contract.balanceOf(NFTMinter.getAddress())).to.equal(1);
         })
     })
 })

@@ -12,13 +12,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const contract = new Contract("0x227F65B7bD0e4E96bd7f5C09aCE995B237EA8857", AttestationMinter.abi) // mumbai
     const provider = new providers.JsonRpcProvider("https://matic-mumbai.chainstacklabs.com")
     const signer = new Wallet(`${process.env.PRIVATE_KEY}`, provider);
-    console.log("SIGNER >>>>>>>>>>>>>>>>>>>>>>>>> ", signer)
+    // console.log("SIGNER >>>>>>>>>>>>>>>>>>>>>>>>> ", signer)
     const contractOwner = contract.connect(signer)
+    let txHash;
 
     try {
-        await contractOwner.mint(utils.formatBytes32String(correctMinter), nullifierHash, solidityProof)
-
-        res.status(200).end()
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", utils.formatBytes32String(correctMinter.slice(0, 31)))
+        await contractOwner.mint(
+            utils.formatBytes32String(correctMinter.slice(0, 31)), nullifierHash, solidityProof,
+            {
+                gasLimit: 9000000
+            }
+        ).then((log: any) => {
+            console.log("TXHASH >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ", log)
+            txHash = log.hash;
+        })
+        // await contractOwner.mint(utils.formatBytes32String(correctMinter), nullifierHash, solidityProof)
+        // console.log("RECEIPT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ", receipt)
+        res.status(200).send({
+            "status_code": 200,
+            "txHash": txHash
+        })
     } catch (error: any) {
         // console.log("error >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ", error)
         // const { message } = error.body

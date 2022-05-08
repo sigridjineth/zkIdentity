@@ -1,6 +1,25 @@
 # ZKU.one Final Proposal: zkIdentity
 ### Private Identity Claim System with Zero-Knowledge for DarkForest.eth
 
+### Introduction
+
+1. GitHub:
+- circom circuits: https://github.com/jypthemiracle/zkIdentity/tree/circuits
+- frontend: https://github.com/jypthemiracle/zkIdentity/tree/snoop (highly appreciates to my friend, @realsnoopso, who did pair programming an hour for every day) 
+
+2. Deployed Address: https://abit.ly/zkiden_ver1
+3. Demo Video: https://www.youtube.com/watch?v=RDqRJ6Rjzic
+4. Contract Address which is on Polygon Network
+* Verifier address: 0xe162f60a32130596D56D31b1d2A562E3a8161be9
+* AttestationMinter address: 0x16BA61441Ae1345Dbb17d476f8295b0d6517CDbB
+
+### Note & Further plan till late submission
+* The circom circuits branch is clone coding of https://github.com/jefflau/zk-identity for learning circom. only minor changes, no major changes made by me. I focused on learning circom library during testnet launch.
+* However, due to the difficulty of circom library, I changed my frameworks from circom to semaphore.
+- now working on here: https://github.com/jypthemiracle/zkIdentity/tree/main
+- the repo is based on semaphore boilerplate. https://github.com/semaphore-protocol/boilerplate
+* plans to complete a dedicated full feature til the late submission (May 22)
+
 ### I. Background
 
 Authenticating one's identity through public Ethereum Address severely restricts the privacy. Thus, crypto users might want to prove that they are eligible to join or partake in specific activities without revealing one's public address or public keys. Protocols are motivated to support the actions from user side since they might wawnt to distribute an airdrop through off-chain activities.

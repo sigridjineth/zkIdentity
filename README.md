@@ -5,7 +5,7 @@
 
 1. GitHub:
 - circom circuits: https://github.com/jypthemiracle/zkIdentity/tree/circuits
-- frontend: https://github.com/jypthemiracle/zkIdentity/tree/snoop (highly appreciates to my friend, @realsnoopso, who did pair programming an hour for every day) 
+- frontend: https://github.com/jypthemiracle/zkIdentity/tree/snoop (highly appreciates to my friend, [@realsnoopso](https://github.com/realsnoopso), who did pair programming an hour for every day) 
 
 2. Deployed Address: https://abit.ly/zkiden_ver1
 3. Demo Video: https://www.youtube.com/watch?v=RDqRJ6Rjzic

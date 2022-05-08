@@ -15,7 +15,7 @@ contract AttestationMinter is ERC721, SemaphoreCore, Ownable {
     Counters.Counter private _tokenIds;
 
     // A new greeting is published every time a user's proof is validated.
-    event NewGreeting(bytes32 greeting);
+    event NewProofMade(address nowMinter);
 
     // Greeters are identified by a Merkle root.
     // The offchain Merkle tree contains the greeters' identity commitments.
@@ -34,18 +34,18 @@ contract AttestationMinter is ERC721, SemaphoreCore, Ownable {
     // The contract owner must only send the transaction and they will not know anything
     // about the identity of the greeters.
     // The external nullifier is in this example the root of the Merkle tree.
-    function greet(
+    function mint(
         bytes32 _greeting,
         uint256 _nullifierHash,
         uint256[8] calldata _proof
-    ) external onlyOwner _onlyOneNullifierHash(_nullifierHash) {
+    ) external _onlyOneNullifierHash(_nullifierHash) {
         _verifyProof(_greeting, treeRootHash, _nullifierHash, treeRootHash, _proof, verifier);
 
         // Prevent double-greeting (nullifierHash = hash(root + identityNullifier)).
         // Every user can greet once.
         _saveNullifierHash(_nullifierHash);
 
-        emit NewGreeting(_greeting);
+        emit NewProofMade(msg.sender);
 
         _tokenIds.increment();
         uint256 tokenId = _tokenIds.current();

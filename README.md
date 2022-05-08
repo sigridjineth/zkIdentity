@@ -1,70 +1,39 @@
-<p align="center">
-    <h1 align="center">
-      <img width="40" src="https://github.com/appliedzkp/semaphore/blob/main/docs/static/img/semaphore.png">  
-      Semaphore Boilerplate
-    </h1>
-    <p align="center">A simple Next.js/Hardhat privacy application with <a href="https://github.com/appliedzkp/semaphore">Semaphore</a>.</p>
-</p>
+# ZKU.one Final Proposal: zkIdentity
+### Private Identity Claim System with Zero-Knowledge for DarkForest.eth
 
-<p align="center">
-    <a href="https://github.com/cedoor/semaphore-boilerplate/blob/main/LICENSE">
-        <img alt="Github license" src="https://img.shields.io/github/license/cedoor/semaphore-boilerplate.svg?style=flat-square">
-    </a>
-    <a href="https://nextjs.org/">
-        <img alt="Next.js" src="https://img.shields.io/badge/framework-nextjs-393a2a?style=flat-square">
-    </a>
-    <a href="https://hardhat.org/">
-        <img alt="Hardhat" src="https://img.shields.io/badge/contracts-hardhat-afb719?style=flat-square">
-    </a>
-</p>
+### I. Background
 
-The code can be divided into contracts, frontend and backend.
+Authenticating one's identity through public Ethereum Address severely restricts the privacy. Thus, crypto users might want to prove that they are eligible to join or partake in specific activities without revealing one's public address or public keys. Protocols are motivated to support the actions from user side since they might wawnt to distribute an airdrop through off-chain activities.
 
-* [Greeters.sol](https://github.com/cedoor/semaphore-boilerplate/blob/main/contracts/Greeters.sol) contains the root of an offchain Merkle tree to represent the greeters (tree leaves), i.e. the identity commitments generated using the first 3 Ethereum accounts of the Hardhat testing wallet. It also contains a simple function to allow greeters to greet, only once and only if they create a valid Semaphore proof.
-* The [frontend code](https://github.com/cedoor/semaphore-boilerplate/blob/main/pages/index.tsx) allows greeters to create a Semaphore identity with a signed Metamask message (using one of the first 3 Hardhat accounts) and a valid zero-knowledge proof.
-* The [backend code](https://github.com/cedoor/semaphore-boilerplate/blob/main/pages/api/greet.ts) is an API that sends a `greet` transaction signed by the contract owner with the zero-knowledge proof of a greeter.
+Imagine you request to get an airdrop, but it immediately leaks your previous financial history since it is associated with your public identity. You want to join DAO voting but someone prevents to do that since you had voted against the administrator of the DAO. Sounds crazy, right? Let us solve this problem by enabling users to claim airdrops anonymously while prove one's identity (i.e. one has a NFT) without revealing their public keys.
 
-## 🛠 Install
+### II. Implementation
 
-Clone this repository and install the dependencies:
+I am going to build a set of Ethereum contracts and web frontend that allows a user to prove that they were a previous `DarkForest.Eth` winner without revealing the recipent's Ethereum address. By doing so, one could claim the prize (i.e. NFT is minted) without the worries of doxxing one's financial history. One could play `DarkForest` game by creating new address, and claim the prize with existing wallet that you want to be claimed with.
 
-```bash
-git clone https://github.com/cedoor/semaphore-boilerplate.git
-cd semaphore-boilerplate
-yarn
+### III. Technical Specifications
+
+#### Phase 1: Merkle Tree Construction
+
+* User, with `account 1`, signs a message to prove that one has a public key ownership or not.
+
+* User create a `key` and `secret` and they concatenate them to create hash which is `committment`.
+
+```
+committment = hash(key + secret)
 ```
 
-## 📜 Usage
+* The `committment` is transmitted across a public channel, and stored in a `MySQL` database, which is a off-chain in a Amazon Web Service instance - or local storage in a computer.
+* Hashing a merkle tree recursively and publish merkle root hash to on-chain.
 
-#### 1. Compile & test the contract
+#### Phase 2: User submission
 
-```bash
-yarn compile
-yarn test
-```
+* Users, with another account without connection to previous account 1, can redeem with a zero-knowledge proof that validates they belongs in the Merkle tree without revealing which `commitment` is associated with their public key.
+* When users enter an input with `key-secret pair`, it generates a `witness` that serves as an input to the proof generation algorithm.
+* User submits merkle path proof to smart contract, and it verifies one's identity without revealing which `commitment` is associated with one's public key.
+* Smart contract mints a NFT and sends to `account 2`
 
-#### 2. Run Next.js server & Hardhat network
+### IV. Product Roadmap
 
-```bash
-yarn dev
-```
-
-#### 3. Deploy the contract
-
-```bash
-yarn deploy --network localhost
-```
-
-#### 4. Open the app
-
-You can open the web app on http://localhost:3000.
-
-#### 5. Install Metamask and connect the Hardhat wallet
-
-You can find the mnemonic phrase [here](https://hardhat.org/hardhat-network/reference/#accounts).
-
-#### 6. Create your proof
-
-You must use one of the first 3 Hardhat accounts.
-
-
+* Version 1: Allow users to verify that they are the ones who are in merkle-tree commitments and retrieve NFT, in `DarkForest.eth`, using `Semaphore` library.
+* Version 2: Building a sociable prove system that one has its NFT without revealing one's Ethereum address, using `circom`.

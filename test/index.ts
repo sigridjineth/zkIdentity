@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Strategy, ZkIdentity } from '@zk-kit/identity'
 import {
   generateMerkleProof,
@@ -8,7 +9,7 @@ import { expect } from 'chai'
 import { Contract, Signer } from 'ethers'
 import { ethers, run } from 'hardhat'
 // import identityCommitments from "../public/identityCommitments.json"
-import { createIdentityCommitments } from '../test/identity-test'
+import createIdentityCommitments from '../test/identity-test'
 
 describe('AttestationMinter', function () {
   let contract: Contract
@@ -19,12 +20,12 @@ describe('AttestationMinter', function () {
   let NFTMinter: Signer
 
   before(async () => {
-    contract = await run('deploy', { logs: false })
+    // contract = await run('deploy', { logs: false })
 
-    // // when mumbai
-    // contract = await (
-    //   await ethers.getContractFactory('AttestationMinter')
-    // ).attach('0x29F37C0AeEb1810062D1C3989c3A10E657319Cb7')
+    // when mumbai
+    contract = await (
+      await ethers.getContractFactory('AttestationMinter')
+    ).attach('0x227F65B7bD0e4E96bd7f5C09aCE995B237EA8857')
 
     const signers = await ethers.getSigners()
     contractOwner = signers[0]
@@ -46,8 +47,11 @@ describe('AttestationMinter', function () {
       const identityCommitment = BigInt(
         identity.genIdentityCommitment(),
       ).toString()
+
       const nowMintingWinner = message.slice(0, 31)
       correctMinter = ethers.utils.formatBytes32String(nowMintingWinner)
+
+      console.log("correctMinter >>>>>>>>>>>>>>>>>>>>>>>>>> ", correctMinter)
 
       const identityCommitments = createIdentityCommitments()
 
@@ -71,6 +75,8 @@ describe('AttestationMinter', function () {
         finalZkeyPath,
       )
       solidityProof = Semaphore.packToSolidityProof(fullProof.proof)
+
+      console.log("solidityProof >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ", solidityProof)
 
       const nullifierHash = Semaphore.genNullifierHash(
         merkleProof.root,

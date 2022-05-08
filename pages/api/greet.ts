@@ -1,5 +1,5 @@
-import Greeter from "artifacts/contracts/Greeters.sol/Greeters.json"
-import { Contract, providers, utils } from "ethers"
+import AttestationMinter from "artifacts/contracts/AttestationMinter.sol/AttestationMinter.json";
+import { Contract, providers, utils, Wallet } from "ethers"
 import type { NextApiRequest, NextApiResponse } from "next"
 
 // This API can represent a backend.
@@ -7,21 +7,23 @@ import type { NextApiRequest, NextApiResponse } from "next"
 // However they will not be aware of the identity of the users generating the proofs.
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const { greeting, nullifierHash, solidityProof } = JSON.parse(req.body)
+    const { correctMinter, nullifierHash, solidityProof } = req.body
 
-    const contract = new Contract("0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512", Greeter.abi)
-    const provider = new providers.JsonRpcProvider("http://localhost:8545")
-
-    const contractOwner = contract.connect(provider.getSigner())
+    const contract = new Contract("0x227F65B7bD0e4E96bd7f5C09aCE995B237EA8857", AttestationMinter.abi) // mumbai
+    const provider = new providers.JsonRpcProvider("https://matic-mumbai.chainstacklabs.com")
+    const signer = new Wallet(`${process.env.PRIVATE_KEY}`, provider);
+    console.log("SIGNER >>>>>>>>>>>>>>>>>>>>>>>>> ", signer)
+    const contractOwner = contract.connect(signer)
 
     try {
-        await contractOwner.greet(utils.formatBytes32String(greeting), nullifierHash, solidityProof)
+        await contractOwner.mint(utils.formatBytes32String(correctMinter), nullifierHash, solidityProof)
 
         res.status(200).end()
     } catch (error: any) {
-        const { message } = JSON.parse(error.body).error
-        const reason = message.substring(message.indexOf("'") + 1, message.lastIndexOf("'"))
+        // console.log("error >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ", error)
+        // const { message } = error.body
+        // const reason = message.substring(message.indexOf("'") + 1, message.lastIndexOf("'"))
 
-        res.status(500).send(reason || "Unknown error!")
+        res.status(500).send(error.toString() || "Unknown error!")
     }
 }

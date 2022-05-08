@@ -10,12 +10,18 @@ import {
 } from "../elements/index";
 import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
+import { actionCreators as nftActions } from "../redux/modules/nft";
 
 function PrivateNote() {
   const dispatch = useDispatch();
+  const is_loading = useSelector((state) => state.user.selectedAddress);
+
+  const proofs = JSON.parse(window.localStorage.getItem("proofs"));
+  React.useEffect(() => {
+    console.log(proofs[proofs.length - 1]);
+  }, []);
 
   function onClickRight() {
-    console.log("hi");
     history.push("/4");
   }
 
@@ -37,7 +43,7 @@ function PrivateNote() {
         darkforest developers.
       </Text>
       <Spacing size="20px" />
-      <Textarea value="darkforest-eth-0.1-1-0xac2d46376572af088e84d2a567b844a949b33f26a7c01736415d15c96c9726c70467c895461e0373501256470786d5642eb7bc27d1876e4840fcb72ffa1c " />
+      <Textarea value={proofs[proofs.length - 1]} />
       <Spacing size="20px" />
       <ButtonWrap
         onClickLeft={onClickLeft}

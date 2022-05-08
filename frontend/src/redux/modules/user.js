@@ -63,8 +63,6 @@ const _checkNetwork = () => {
 
 const _intializeEthers = () => {
   const _provider = new ethers.providers.Web3Provider(window.ethereum);
-  console.log("EEEEEE")
-  console.log("VVVVVVVV", contractAddress.AttestationMinter)
   const _minter = new ethers.Contract(
     contractAddress.AttestationMinter,
     AttestationMinterArtifact.abi,
@@ -100,12 +98,11 @@ const loginCheckDB = () => {
   return async function (dispatch, getState, { history }) {
     const network = await ethereum.request({ method: "net_version" });
 
-    const _provider = new ethers.providers.Web3Provider(window.ethereum);
-
     if (Number(network) === 5 || 31337) {
       const accounts = await ethereum.request({
         method: "eth_accounts",
       });
+      console.log(accounts);
       dispatch(selectedAddress(accounts[0]));
     } else {
       dispatch(provider(undefined));
@@ -151,6 +148,6 @@ export default handleActions(
 );
 
 // action creator export
-const actionCreators = { loginDB, loginCheckDB };
+const actionCreators = { loginDB, loginCheckDB, selectedAddress };
 
 export { actionCreators };

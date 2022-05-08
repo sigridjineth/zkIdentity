@@ -14,6 +14,8 @@ import {
   WaitngClaim,
 } from "../pages";
 import { actionCreators as userActions } from "../redux/modules/user";
+import { actionCreators as nftActions } from "../redux/modules/nft";
+
 import { ethers } from "ethers";
 
 import { Header, Card } from "../comps";
@@ -21,11 +23,21 @@ import { Header, Card } from "../comps";
 import { useDispatch, useSelector } from "react-redux";
 
 function App() {
+  const { ethereum } = window;
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.user.selectedAddress);
 
   React.useEffect(() => {
     dispatch(userActions.loginCheckDB());
+    console.log("etheron");
+    ethereum.on("accountsChanged", (newAddress) => {
+      console.log("hi");
+      if (newAddress === undefined) {
+        return dispatch(userActions.selectedAddress(undefined));
+      }
+
+      dispatch(userActions.selectedAddress(newAddress));
+    });
   }, []);
 
   return (

@@ -5,6 +5,7 @@ import Home from "./Home";
 import PrivateNote from "./PrivateNote";
 import SecretClaim from "./SecretClaim";
 import WaitngClaim from "./WaitngClaim";
+import WaitingCreatingProof from "./WaitingCreatingProof";
 
 export {
   AfterConnect,
@@ -14,4 +15,5 @@ export {
   PrivateNote,
   SecretClaim,
   WaitngClaim,
+  WaitingCreatingProof,
 };

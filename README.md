@@ -8,7 +8,7 @@
 - frontend: https://github.com/jypthemiracle/zkIdentity/tree/snoop (highly appreciates to my friend, [@realsnoopso](https://github.com/realsnoopso), who did pair programming an hour for every day) 
 
 2. Deployed Address: https://abit.ly/zkiden_ver1
-3. Demo Video: https://www.youtube.com/watch?v=RDqRJ6Rjzic
+3. Demo Video: https://youtu.be/3Z7hyrzN0-o
 4. Contract Address which is on Polygon Network
 * Verifier address: 0xe162f60a32130596D56D31b1d2A562E3a8161be9
 * AttestationMinter address: 0x16BA61441Ae1345Dbb17d476f8295b0d6517CDbB

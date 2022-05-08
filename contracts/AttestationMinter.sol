@@ -19,14 +19,14 @@ contract AttestationMinter is ERC721, SemaphoreCore, Ownable {
 
     // Greeters are identified by a Merkle root.
     // The offchain Merkle tree contains the greeters' identity commitments.
-    uint256 public greeters;
+    uint256 public treeRootHash;
 
     // The external verifier used to verify Semaphore proofs.
     IVerifier public verifier;
 
-    constructor(uint256 _greeters, address _verifier)
+    constructor(uint256 _treeRootHash, address _verifier)
         ERC721("Dark Forest Proof", "PROOF") {
-            greeters = _greeters;
+            treeRootHash = _treeRootHash;
             verifier = IVerifier(_verifier);
         }
 
@@ -39,7 +39,7 @@ contract AttestationMinter is ERC721, SemaphoreCore, Ownable {
         uint256 _nullifierHash,
         uint256[8] calldata _proof
     ) external onlyOwner _onlyOneNullifierHash(_nullifierHash) {
-        _verifyProof(_greeting, greeters, _nullifierHash, greeters, _proof, verifier);
+        _verifyProof(_greeting, treeRootHash, _nullifierHash, treeRootHash, _proof, verifier);
 
         // Prevent double-greeting (nullifierHash = hash(root + identityNullifier)).
         // Every user can greet once.

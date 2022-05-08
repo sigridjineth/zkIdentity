@@ -9,26 +9,28 @@ import { createIdentityCommitments } from "../test/identity-test"
 describe("AttestationMinter", function () {
     let contract: Contract
     let contractOwner: Signer
-    let solidityProof: SemaphoreSolidityProof;
+    let solidityProof: SemaphoreSolidityProof
     let correctMinter: string
     let testHash: BigInt
-    // let dontSure: Signer
+    let contractMinter: Signer
 
     before(async () => {
         contract = await run("deploy", { logs: false })
 
         const signers = await ethers.getSigners()
         contractOwner = signers[0]
-        // dontSure = signers[1]
+        contractMinter = signers[1]
     })
 
-    describe("# greet", () => {
+    describe("# NFTs", () => {
         const wasmFilePath = "../public/semaphore.wasm"
         const finalZkeyPath = "../public/semaphore_final.zkey"
 
-        it("Should greet", async () => {
-            // const message = await contractOwner.signMessage("Sign this message to create your identity!")
-            const message = "0x0f75f25eb9bc68c8886d6d4828966c58aac3c232";
+        it("should issue proof", async () => {
+            console.log(contractMinter)
+            const message = await contractOwner.signMessage((await contractOwner.getAddress()).toString())
+
+            console.log("message", message)
 
             const identity = new ZkIdentity(Strategy.MESSAGE, message)
             const identityCommitment = BigInt(identity.genIdentityCommitment()).toString();
@@ -68,10 +70,13 @@ describe("AttestationMinter", function () {
 
             console.log("nullifierHash", nullifierHash);
 
-            testHash = 12369641887381720728228481080453068802864453634826283733139048263356723130563n;
+            // testHash = 12369641887381720728228481080453068802864453634826283733139048263356723130563n;
+
+            testHash = 7931904850431481242860951826119656502805225605339161111671000054048825240416n
 
             expect(nullifierHash).to.equal(testHash);
         }),
+
         it("should mint", async() => {
             const transaction = contract.greet(correctMinter, testHash, solidityProof)
             await expect(transaction).to.emit(contract, "NewProofMade").withArgs(correctMinter)

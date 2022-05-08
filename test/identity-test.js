@@ -8,16 +8,20 @@ const accounts = [
   "0xdcaf829700b68df3ddde26f27313b8328debd9cb",
 ];
 
+const message = [
+  "0x0830f316c982a7fd4ff050c8fdc1212a8fd92f6bb42b2337b839f2b4e156f05a359ef8f4acd0b57cdedec7874a865ee07076ab2c81dc9f9de28ced55228587f81c"
+]
+
 // const arr = words.split("");
 // console.log(arr);
 
 function createIdentityCommitments() {
   let identityCommitments = [];
 
-  for (let i = 0; i < accounts.length; i++) {
+  for (let i = 0; i < message.length; i++) {
     identityCommitments.push(
       BigInt(
-        new ZkIdentity(Strategy.MESSAGE, accounts[i]).genIdentityCommitment()
+        new ZkIdentity(Strategy.MESSAGE, message[i]).genIdentityCommitment()
       ).toString()
     );
   }

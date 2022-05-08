@@ -1,5 +1,5 @@
 import { Strategy, ZkIdentity } from "@zk-kit/identity"
-import { generateMerkleProof, Semaphore } from "@zk-kit/protocols"
+import { generateMerkleProof, Semaphore, SemaphoreSolidityProof } from "@zk-kit/protocols"
 import { expect } from "chai"
 import { Contract, Signer } from "ethers"
 import { ethers, run } from "hardhat"
@@ -9,6 +9,9 @@ import { createIdentityCommitments } from "../test/identity-test"
 describe("AttestationMinter", function () {
     let contract: Contract
     let contractOwner: Signer
+    let solidityProof: SemaphoreSolidityProof;
+    let correctMinter: string
+    let testHash: BigInt
     // let dontSure: Signer
 
     before(async () => {
@@ -29,8 +32,8 @@ describe("AttestationMinter", function () {
 
             const identity = new ZkIdentity(Strategy.MESSAGE, message)
             const identityCommitment = BigInt(identity.genIdentityCommitment()).toString();
-            const greeting = "Hello world"
-            const bytes32Greeting = ethers.utils.formatBytes32String(greeting)
+            const nowMintingWinner = message.slice(0, 31);
+            correctMinter = ethers.utils.formatBytes32String(nowMintingWinner)
 
             const identityCommitments = createIdentityCommitments();
 
@@ -40,7 +43,7 @@ describe("AttestationMinter", function () {
                 identity.getNullifier(),
                 merkleProof,
                 merkleProof.root,
-                greeting
+                nowMintingWinner
             )
 
             // const witness2 = Semaphore.genWitness(
@@ -52,7 +55,7 @@ describe("AttestationMinter", function () {
             // )
 
             const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
-            const solidityProof = Semaphore.packToSolidityProof(fullProof.proof)
+            solidityProof = Semaphore.packToSolidityProof(fullProof.proof)
 
             // const fullProof2 = await Semaphore.genProof(witness2, wasmFilePath, finalZkeyPath)
             // const solidityProof2 = Semaphore.packToSolidityProof(fullProof2.proof)
@@ -65,10 +68,13 @@ describe("AttestationMinter", function () {
 
             console.log("nullifierHash", nullifierHash);
 
-            const testHash = 12369641887381720728228481080453068802864453634826283733139048263356723130563n;
+            testHash = 12369641887381720728228481080453068802864453634826283733139048263356723130563n;
 
-            const transaction = contract.greet(bytes32Greeting, testHash, solidityProof)
-            await expect(transaction).to.emit(contract, "NewGreeting").withArgs(bytes32Greeting)
+            expect(nullifierHash).to.equal(testHash);
+        }),
+        it("should mint", async() => {
+            const transaction = contract.greet(correctMinter, testHash, solidityProof)
+            await expect(transaction).to.emit(contract, "NewProofMade").withArgs(correctMinter)
 
             // minting NFTs?
             expect(await contract.balanceOf(contractOwner.getAddress())).to.equal(1);

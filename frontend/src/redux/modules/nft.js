@@ -2,10 +2,8 @@ import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 
 import { getInput } from "../../helpers/GetInput";
-import {
-  calculateProof,
-  buildContractCallArgs,
-} from "../../helpers/ProofHelper";
+import calculateProof from "../../helpers/ProofHelper";
+import buildContractCallArgs from "../../helpers/ProofHelper2";
 import { useSelector } from "react-redux";
 
 const { ethereum } = window;
@@ -34,7 +32,6 @@ const _handleProve = (_provider) => {
     dispatch(isLoading(true));
 
     const input = await getInput(_provider.getSigner(0));
-    console.log(input);
 
     const proof = await calculateProof(input);
     console.log(proof);

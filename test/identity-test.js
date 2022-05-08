@@ -25,7 +25,7 @@ function createIdentityCommitments() {
   return identityCommitments;
 }
 
-export default createIdentityCommitments;
+export { createIdentityCommitments, accounts} ;
 
 // let identityCommitments = [];
 

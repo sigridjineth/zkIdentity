@@ -4,7 +4,7 @@ import { expect } from "chai"
 import { Contract, Signer } from "ethers"
 import { ethers, run } from "hardhat"
 // import identityCommitments from "../public/identityCommitments.json"
-import createIdentityCommitments from "../test/identity-test"
+import { createIdentityCommitments } from "../test/identity-test"
 
 describe("AttestationMinter", function () {
     let contract: Contract

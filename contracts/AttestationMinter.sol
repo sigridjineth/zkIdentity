@@ -9,7 +9,11 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 /// @title Greeters contract.
 /// @dev The following code is just a example to show how Semaphore con be used.
-contract Greeters is ERC721, SemaphoreCore, Ownable {
+contract AttestationMinter is ERC721, SemaphoreCore, Ownable {
+    // ERC721 tokenIds
+    using Counters for Counters.Counter;
+    Counters.Counter private _tokenIds;
+
     // A new greeting is published every time a user's proof is validated.
     event NewGreeting(bytes32 greeting);
 
@@ -20,10 +24,11 @@ contract Greeters is ERC721, SemaphoreCore, Ownable {
     // The external verifier used to verify Semaphore proofs.
     IVerifier public verifier;
 
-    constructor(uint256 _greeters, address _verifier) ERC721("Dark Forest Proof", "PROOF") {
-        greeters = _greeters;
-        verifier = IVerifier(_verifier);
-    }
+    constructor(uint256 _greeters, address _verifier)
+        ERC721("Dark Forest Proof", "PROOF") {
+            greeters = _greeters;
+            verifier = IVerifier(_verifier);
+        }
 
     // Only users who create valid proofs can greet.
     // The contract owner must only send the transaction and they will not know anything
@@ -41,5 +46,9 @@ contract Greeters is ERC721, SemaphoreCore, Ownable {
         _saveNullifierHash(_nullifierHash);
 
         emit NewGreeting(_greeting);
+
+        _tokenIds.increment();
+        uint256 tokenId = _tokenIds.current();
+        _mint(msg.sender, tokenId);
     }
 }

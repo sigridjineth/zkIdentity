@@ -3,7 +3,7 @@ import { poseidon } from "circomlibjs"
 import { Contract } from "ethers"
 import { task, types } from "hardhat/config"
 // import identityCommitments from "../public/identityCommitments.json"
-import createIdentityCommitments from "../test/identity-test"
+import { createIdentityCommitments, accounts } from "../test/identity-test"
 
 task("deploy", "Deploy a Greeters contract")
     .addOptionalParam<boolean>("logs", "Print the logs", true, types.boolean)
@@ -15,7 +15,7 @@ task("deploy", "Deploy a Greeters contract")
 
         logs && console.log(`Verifier contract has been deployed to: ${verifier.address}`)
 
-        const GreetersContract = await ethers.getContractFactory("Greeters")
+        const AttestationMinterContract = await ethers.getContractFactory("AttestationMinter")
 
         const tree = new IncrementalMerkleTree(poseidon, 20, BigInt(0), 2)
 
@@ -23,11 +23,13 @@ task("deploy", "Deploy a Greeters contract")
             tree.insert(identityCommitment)
         }
 
-        const greeters = await GreetersContract.deploy(tree.root, verifier.address)
+        const minters = await AttestationMinterContract.deploy(tree.root, verifier.address)
 
-        await greeters.deployed()
+        await minters.deployed()
 
-        logs && console.log(`Greeters contract has been deployed to: ${greeters.address}`)
+        logs && console.log(`Greeters contract has been deployed to: ${minters.address}`)
 
-        return greeters
+        return minters
+
+        console.log(accounts)
     })

@@ -20,12 +20,12 @@ describe('AttestationMinter', function () {
   let NFTMinter: Signer
 
   before(async () => {
-    // contract = await run('deploy', { logs: false })
+    contract = await run('deploy', { logs: false })
 
     // when mumbai
-    contract = await (
-      await ethers.getContractFactory('AttestationMinter')
-    ).attach('0x227F65B7bD0e4E96bd7f5C09aCE995B237EA8857')
+    // contract = await (
+    //   await ethers.getContractFactory('AttestationMinter')
+    // ).attach('0x227F65B7bD0e4E96bd7f5C09aCE995B237EA8857')
 
     const signers = await ethers.getSigners()
     contractOwner = signers[0]
@@ -37,6 +37,7 @@ describe('AttestationMinter', function () {
     const finalZkeyPath = '../public/semaphore_final.zkey'
 
     it('should issue proof', async () => {
+      console.log(await contractOwner.getAddress())
       const message = await contractOwner.signMessage(
         (await contractOwner.getAddress()).toString(),
       )
@@ -47,6 +48,8 @@ describe('AttestationMinter', function () {
       const identityCommitment = BigInt(
         identity.genIdentityCommitment(),
       ).toString()
+
+      console.log("message >>>>>>>>>>>>>>>>>>>>>>>>>>>>> ", message)
 
       const nowMintingWinner = message.slice(0, 31)
       correctMinter = ethers.utils.formatBytes32String(nowMintingWinner)

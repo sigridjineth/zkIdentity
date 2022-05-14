@@ -23,6 +23,8 @@ task("deploy", "Deploy a Verify contract")
             tree.insert(identityCommitment)
         }
 
+        console.log("TREE ROOT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", tree.root)
+
         const minters = await AttestationMinterContract.deploy(tree.root, verifier.address)
 
         await minters.deployed()

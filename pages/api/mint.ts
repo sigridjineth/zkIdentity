@@ -10,24 +10,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const nullifierHash = JSON.parse(body)["nullifierHash"]
     const solidityProof = JSON.parse(body)["solidityProof"]
 
-    const contractAddress = "0x556F664A59bFB2e432fA9fd5800752bC59116e58"
-
-    const contract = new Contract(contractAddress, AttestationMinter.abi) // mumbai
-    const provider = new providers.JsonRpcProvider(`${process.env.MUMBAI_URI}`)
-    const signer = new Wallet(`${process.env.PRIVATE_KEY}`, provider);
+    // const contractAddress = "0x556F664A59bFB2e432fA9fd5800752bC59116e58" // mumbai testnet
+    const contractAddress = "0x0e49820ceed405f6560d724333b45586c49e6fb1" // kovan testnet
+    const contract = new Contract(contractAddress, AttestationMinter.abi)
+    const provider = new providers.JsonRpcProvider("https://ethereum-kovan-rpc.allthatnode.com/fV1yQSJuIz74RU8lfhew7xJKndczum36")
+    const signer = new Wallet(`${process.env.PRIVATE_KEY_MINTER}`, provider);
     const contractOwner = contract.connect(signer)
     let txHash;
 
     try {
-        await contractOwner.mint(
-            utils.formatBytes32String(correctMinter.slice(0, 31)), nullifierHash, solidityProof,
-            {
-                gasLimit: 20000000
-            }
-        ).then((log: any) => {
-            console.log("TXHASH >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ", log)
-            txHash = log.hash;
-        })
+        let tx = await contractOwner.mint(
+            utils.formatBytes32String(correctMinter.slice(0, 31)),
+            nullifierHash,
+            solidityProof,
+        {
+            gasLimit: 20000000
+        }
+        );
+        await tx.wait();
+        console.log("Record set" + tx.hash);
+
         res.status(200).send({
             "status_code": 200,
             "txHash": txHash

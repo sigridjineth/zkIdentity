@@ -71,11 +71,14 @@ export default function Home() {
         const response = await fetch("/api/mint", {
             method: "POST",
             body: JSON.stringify({
-                correctMinter: correctMinter,
-                nullifierHash: nullifierHash,
-                solidityProof: solidityProof
+                "correctMinter": correctMinter,
+                "nullifierHash": nullifierHash,
+                "solidityProof": solidityProof
             })
         })
+
+        const body = await response.json();
+        console.log("body: ", body);
 
         if (response.status === 500) {
             const errorMessage = await response.text()
@@ -105,9 +108,22 @@ export default function Home() {
                     Get a Proof
                 </div>
 
-                {/*<div onClick={() => mint()} className={styles.button}>*/}
-                {/*    Mint a NFT*/}
-                {/*</div>*/}
+                <div onClick={() => mint(
+                    "0x4b540b79f3178e8eae3da55eabe05c65c28299b723aabca35d6ff8e6b2a492d37ef4cd06ae1e6573819ffa5f1ab85dee6547b9c21ce49b3cf99401d6b709fcb31c",
+                    "17255530457257394875176377021288167427631990061268730519821747969551682432884",
+                    [
+                        "3320272635416613266953774442762054127309575074865044046833137369225272779213",
+                        "20668138058572213310636602881933743145282235930024010727871472665041705741287",
+                        "13628251602729504078250088021810498105147400206651286000568825933213111467637",
+                        "13831038125464100448133355551433409456308587711066206453628687933914215480125",
+                        "16545449522840763150087474988282514974375424849632172511510793373315412516448",
+                        "4074197993912275337629038054969689671070237983279413028757007669014131224688",
+                        "4529924247873463290643817459892712449771182208546214954312771770304711244475",
+                        "5394951715729664003903543658329949633079059668968997770978216095995390875829"
+                    ]
+                )} className={styles.button}>
+                    Mint a NFT
+                </div>
             </main>
         </div>
     )

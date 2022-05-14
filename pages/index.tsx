@@ -58,11 +58,21 @@ export default function Home() {
         const { proof, publicSignals } = await Semaphore.genProof(witness, "./semaphore.wasm", "./semaphore_final.zkey")
         const solidityProof = Semaphore.packToSolidityProof(proof)
 
+        console.log(
+            "correctMinter: ", correctMinter,
+            "nullifierHash: ", publicSignals.nullifierHash,
+            "solidityProof: ", solidityProof
+        )
+
+        setLogs("Created your Semaphore proof. Check your console.")
+    }
+
+    async function mint(correctMinter: any, nullifierHash: any, solidityProof: any) {
         const response = await fetch("/api/mint", {
             method: "POST",
             body: JSON.stringify({
                 correctMinter: correctMinter,
-                nullifierHash: publicSignals.nullifierHash,
+                nullifierHash: nullifierHash,
                 solidityProof: solidityProof
             })
         })

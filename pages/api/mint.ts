@@ -11,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const contractAddress = "0x556F664A59bFB2e432fA9fd5800752bC59116e58"
 
     const contract = new Contract(contractAddress, AttestationMinter.abi) // mumbai
-    const provider = new providers.JsonRpcProvider("https://matic-mumbai.chainstacklabs.com")
+    const provider = new providers.JsonRpcProvider(`${process.env.MUMBAI_URI}`)
     const signer = new Wallet(`${process.env.PRIVATE_KEY}`, provider);
     // console.log("SIGNER >>>>>>>>>>>>>>>>>>>>>>>>> ", signer)
     const contractOwner = contract.connect(signer)
@@ -22,7 +22,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         await contractOwner.mint(
             utils.formatBytes32String(correctMinter.slice(0, 31)), nullifierHash, solidityProof,
             {
-                gasLimit: 9000000
+                gasLimit: 20000000
             }
         ).then((log: any) => {
             console.log("TXHASH >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ", log)

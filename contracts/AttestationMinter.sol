@@ -28,7 +28,7 @@ contract AttestationMinter is ERC721, SemaphoreCore, Ownable {
         ERC721("Dark Forest Proof", "PROOF") {
             treeRootHash = _treeRootHash;
             verifier = IVerifier(_verifier);
-        }
+    }
 
     // Only users who create valid proofs can greet.
     // The contract owner must only send the transaction and they will not know anything

@@ -14,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // const contractAddress = "0x556F664A59bFB2e432fA9fd5800752bC59116e58" // mumbai testnet
     const contractAddress = "0x0e49820ceed405f6560d724333b45586c49e6fb1" // kovan testnet
     const contract = new Contract(contractAddress, AttestationMinter.abi)
-    const provider = new providers.JsonRpcProvider("https://ethereum-kovan-rpc.allthatnode.com/" + process.env.ATN_API_KEY)
+    const provider = new providers.JsonRpcProvider("https://ethereum-kovan-rpc.allthatnode.com/fV1yQSJuIz74RU8lfhew7xJKndczum36")
     const signer = new Wallet(`${process.env.PRIVATE_KEY_MINTER}`, provider);
     const contractOwner = contract.connect(signer)
     let txHash;

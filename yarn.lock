@@ -6024,6 +6024,13 @@
   "resolved" "https://registry.npmjs.org/jsesc/-/jsesc-0.5.0.tgz"
   "version" "0.5.0"
 
+"json-bigint@^1.0.0":
+  "integrity" "sha512-SiPv/8VpZuWbvLSMtTDU8hEfrZWg/mH/nV/b4o0CYbSxu1UIQPLdwKOCIyLQX+VIPO5vrLX3i8qtqFyhdPSUSQ=="
+  "resolved" "https://registry.npmjs.org/json-bigint/-/json-bigint-1.0.0.tgz"
+  "version" "1.0.0"
+  dependencies:
+    "bignumber.js" "^9.0.0"
+
 "json-buffer@3.0.0":
   "integrity" "sha1-Wx85evx11ne96Lz8Dkfh+aPZqJg="
   "resolved" "https://registry.npmjs.org/json-buffer/-/json-buffer-3.0.0.tgz"

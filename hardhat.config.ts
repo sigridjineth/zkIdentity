@@ -19,10 +19,14 @@ const config: HardhatUserConfig = {
     },
     networks: {
         mumbai: {
-            url: process.env.MUMBAI_URL,
+            url: process.env.MUMBAI_URI,
             accounts: [process.env.PRIVATE_KEY_HASHCREATOR!, process.env.PRIVATE_KEY_MINTER!],
-            gas: 5000000,
-            gasPrice: 8000000000
+            gasPrice: 20000000000,
+            gas: 6000000,
+        },
+        kovan: {
+            url: "https://ethereum-kovan-rpc.allthatnode.com/fV1yQSJuIz74RU8lfhew7xJKndczum36",
+            accounts: [process.env.PRIVATE_KEY_HASHCREATOR!, process.env.PRIVATE_KEY_MINTER!]
         }
     },
     gasReporter: {
@@ -31,7 +35,8 @@ const config: HardhatUserConfig = {
     },
     etherscan: {
         apiKey: {
-            polygonMumbai: process.env.polygonMumbai
+            polygonMumbai: process.env.polygonMumbai,
+            kovan: "PJK14BKYG3HJ4VQXMNS4J6GSU361V58VNI"
         }
     }
 }
